@@ -1,6 +1,9 @@
 # Core dependencies for IDR MVP
 flask
 flask-cors
+python-socketio
+uvicorn
+fastapi
 simple-websocket
 requests
 beautifulsoup4
@@ -8,3 +11,4 @@ litellm
 pyyaml
 json-repair
 rapidfuzz
+tenacity

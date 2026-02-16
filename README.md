@@ -47,13 +47,27 @@ git clone https://github.com/bopan3/InterDeepResearch.git
 cd InterDeepResearch
 ```
 
-2. Install Python dependencies:
+2. Create and activate a conda environment:
+
+```bash
+conda create -n InterDeepResearch python=3.11
+conda activate InterDeepResearch
+```
+
+3. Install Python dependencies:
 
 ```bash
 pip install -r requirements.txt
+pip install 'crawl4ai[pdf]'
 ```
 
-3. Configure API keys and settings:
+4. Install Playwright browsers:
+
+```bash
+playwright install
+```
+
+5. Configure API keys and settings:
 
 Edit `configs/default_config.yaml` to set up your API keys:
 
@@ -82,7 +96,7 @@ system_language: "English"
 server_mode: "normal"
 ```
 
-4. Start the backend server:
+6. Start the backend server:
 
 ```bash
 python IDR_backend/server.py --host 0.0.0.0 --port 5001
@@ -131,7 +145,7 @@ The frontend will open automatically at `http://localhost:3000`
 
 ## Usage
 
-1. Start the backend server (see Backend Setup step 4)
+1. Start the backend server (see Backend Setup step 6)
 2. Start the frontend development server (see Frontend Setup step 4)
 3. Open your browser and navigate to `http://localhost:3000`
 4. Enter your research goal in the input box and start exploring!
