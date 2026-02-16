@@ -15,9 +15,12 @@ A prototype interacive research system that enables human-agent collaborative in
 
 <div align="center">
 
-[![System Interface](assets/system_interface.png)](https://replay.dropbox.com/share/qjRvvx5pv8XROENn?video_version_id=pid_rvv%3AAAAAAA-rFZNDtrIrSicdCnrm1NGjCc4ivRWPcR4GA_MfxpAF)
+[![System Interface](assets/system_interface.png)](https://www.youtube.com/watch?v=zoC3pu9yt9w)
 
-*Click the image above to watch the system demo video*
+
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=zoC3pu9yt9w)
+[![Bilibili](https://img.shields.io/badge/Bilibili-00A1D6?style=for-the-badge&logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV1HHZTBeECH/)
+[![Dropbox](https://img.shields.io/badge/Dropbox-0061FF?style=for-the-badge&logo=dropbox&logoColor=white)](https://replay.dropbox.com/share/qjRvvx5pv8XROENn?video_version_id=pid_rvv%3AAAAAAA-rFZNDtrIrSicdCnrm1NGjCc4ivRWPcR4GA_MfxpAF)
 
 </div>
 
