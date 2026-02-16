@@ -1,0 +1,317 @@
+.reactflow-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: #fafafa;
+}
+
+.reactflow-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+/* 返回按钮样式 */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  &:hover:not(:disabled) {
+    background-color: #f8fafc;
+    border-color: #0891b2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+    
+    svg {
+      color: #0891b2;
+    }
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:disabled {
+    background-color: #f1f5f9;
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+    opacity: 0.5;
+    
+    svg {
+      color: #94a3b8;
+    }
+  }
+  
+  svg {
+    color: #64748b;
+    transition: color 0.2s ease;
+  }
+}
+
+.force-layout-controls, .create-button-container {
+  display: flex;
+  gap: 8px;
+  
+  .layout-button, .create-button {
+    background-color: #0891B2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: #0e7490;
+    }
+    
+    &:active {
+      transform: scale(0.98);
+    }
+    
+    &.running {
+      background-color: #64748b;
+      cursor: not-allowed;
+    }
+    
+    &.active {
+      background-color: #059669;
+    }
+    
+    &.active:hover {
+      background-color: #047857;
+    }
+  }
+}
+
+/* 拖拽预览卡片样式 */
+.card-drag-preview {
+  background: #ffffff;
+  border: 2px solid #0891B2;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 220px;
+  height: 160px;
+  opacity: 0.95;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 9999;
+  pointer-events: none;
+  
+  .card-preview-header {
+    padding: 12px 16px 8px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .card-preview-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.4;
+  }
+  
+  .card-preview-status {
+    padding: 8px 12px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .status-preview-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .status-preview-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #f59e0b;
+    flex-shrink: 0;
+  }
+  
+  .card-preview-body {
+    flex: 1;
+    padding: 12px 16px;
+    overflow: hidden;
+  }
+  
+  .card-preview-content {
+    font-size: 14px;
+    color: #64748b;
+    line-height: 1.5;
+    font-style: italic;
+  }
+}
+
+
+
+.empty-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #6c757d;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* MiniMap 自定义样式 */
+.react-flow__minimap {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e1e5e9;
+  overflow: hidden;
+}
+
+.react-flow__minimap-mask {
+  border-radius: 4px;
+}
+
+/* 节点位置动画 - 平滑的位置过渡效果 */
+.react-flow__node {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* 节点位置更新时的动画效果 */
+.react-flow__node.animating {
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+/* 边缘基础样式 */
+.react-flow__edge {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* 边缘路径基础样式 - 确保线条跟随节点移动 */
+.react-flow__edge path {
+  transition: d 0.75s cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+  will-change: d;
+}
+
+/* 为所有SVG路径添加平滑过渡 */
+.react-flow__edges svg path {
+  transition: d 0.75s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* 边缘布局更新时的动画效果 */
+.react-flow__edge.animating {
+  transition: opacity 0.3s ease;
+}
+
+.react-flow__edge.animating path {
+  /* 线条跟随节点移动的过渡效果 */
+  transition: d 0.75s cubic-bezier(0.23, 1, 0.32, 1) !important;
+  animation: edgeFollow 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* 线条跟随动画 - 突出显示线条正在跟随移动 */
+@keyframes edgeFollow {
+  0% {
+    opacity: 0.6;
+    filter: brightness(1.2);
+  }
+  30% {
+    opacity: 0.8;
+    filter: brightness(1.4);
+  }
+  70% {
+    opacity: 0.9;
+    filter: brightness(1.1);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+}
+
+/* 当节点状态改变时，为线条添加特殊动画效果 */
+.react-flow__edge.node-state-change path {
+  animation: lineMove 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 线条移动动画关键帧（保留原有功能） */
+@keyframes lineMove {
+  0% {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* 线条悬停效果 */
+.react-flow__edge:hover path {
+  stroke-width: 2.5;
+  transition: stroke-width 0.2s ease;
+}
+
+/* 线条焦点效果 */
+.react-flow__edge.selected path {
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 4px rgba(8, 145, 178, 0.4));
+}
+
+/* 项目切换时禁用所有位置和路径过渡，让节点与线条直接就位 */
+.reactflow-container.no-transition {
+  .react-flow__node {
+    transition: none !important;
+  }
+  .react-flow__node.animating {
+    transition: none !important;
+  }
+  .react-flow__edge path,
+  .react-flow__edges svg path {
+    transition: none !important;
+    animation: none !important;
+  }
+  .react-flow__edge.animating path {
+    transition: none !important;
+    animation: none !important;
+  }
+}

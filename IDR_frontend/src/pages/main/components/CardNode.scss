@@ -1,0 +1,1530 @@
+// 卡片容器
+.card-container {
+  position: relative;
+  width: 280px;
+  height: 200px;
+  background: white;
+  border: 2px solid #000000; // 增加矩形边框粗细到2px
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #333333; // 悬停时稍微浅一点的黑色
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  &.selected {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+}
+
+.card-node {
+  --card-highlight-color: #387bff;
+  background: #ffffff; // 白色主体
+  border: 2px solid #000000; // 改为黑色边框
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  height: 200px;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: visible; // 允许圆形溢出
+  isolation: isolate; // 确保伪元素在卡片后方渲染
+  
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border-color: #333333; // hover时稍微浅一点的黑色
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: calc(12px + 5px);
+    border: 4px solid transparent;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+    z-index: -1;
+  }
+  
+  &.highlighted {
+    z-index: 2;
+    
+    &::before {
+      border-color: var(--card-highlight-color);
+      opacity: 1;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    }
+  }
+  
+  &.selected {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  }
+
+  // 选择模式下的样式
+  &.selection-mode {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: #10b981;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    &.selected-for-action {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.4);
+      background-color: rgba(16, 185, 129, 0.1);
+      
+      &::after {
+        content: '✓';
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        background-color: #10b981;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 10;
+      }
+    }
+  }
+
+  // 引用块样式 - 圆形标签样式（作用域限制在 .card-node 内）
+  .citation-block {
+    display: inline-block;
+    position: relative;
+    top: 0; // 正常位置，不再是上标
+    background-color: #666; // 灰色背景
+    color: white; // 白色字体
+    padding: 0; // 去掉padding，用固定宽高
+    border-radius: 50%; // 圆形
+    font-size: 11px; // 稍微增大字体
+    font-weight: 600;
+    margin: 0 2px; // 左右间距
+    cursor: help;
+    border: none; // 去掉边框
+    opacity: 1; // 完全不透明
+    line-height: 14px; // 与高度一致，垂直居中
+    width: 14px; // 稍微缩小的固定宽度
+    height: 14px; // 稍微缩小的固定高度，确保圆形
+    text-align: center; // 文字居中
+    text-decoration: none; // 去掉下划线
+    vertical-align: middle; // 添加垂直对齐，避免位置跳动
+  }
+
+  // 右下角 + 按钮样式
+  .card-add-button {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    background-color: rgba(0, 0, 0, 0.25);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    pointer-events: auto;
+    line-height: 1;
+    padding-bottom: 5px;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      transform: scale(1.15);
+    }
+  }
+
+  // webpage 卡片的特殊布局样式
+  .webpage-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    // URL 部分样式
+     .webpage-url-section {
+       display: flex;
+       align-items: center;
+       gap: 8px;
+       
+       .webpage-favicon {
+         width: 16px;
+         height: 16px;
+         flex-shrink: 0;
+       }
+       
+       .webpage-url {
+          font-size: 12px;
+          color: #9ca3af;
+          font-family: monospace;
+          word-break: break-all;
+          line-height: 1.3;
+        }
+     }
+    
+    // Summary 部分样式
+    .webpage-summary-section {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: -15px; // 减少与下方 markdown 部分的间距
+      
+      .quote-icon {
+        width: 20px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        margin-right: 0px;
+      }
+      
+      .webpage-summary {
+        font-size: 18px; // 调整为 18px
+        color: #000000; // 改为黑色
+        line-height: 1.5;
+        font-style: normal; // 去除斜体
+        flex: 1;
+      }
+    }
+    
+    // Markdown 内容部分样式
+    .webpage-markdown-section {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #374151;
+      
+      h1, h2, h3, h4, h5, h6 {
+        margin: 12px 0 6px 0;
+        color: #1f2937;
+        font-weight: 600;
+      }
+      
+      h1 { font-size: 16px; }
+      h2 { font-size: 15px; }
+      h3 { font-size: 14px; }
+      h4, h5, h6 { font-size: 13px; }
+      
+      p {
+        margin: 6px 0;
+      }
+      
+      ul, ol {
+        margin: 6px 0;
+        padding-left: 16px;
+      }
+      
+      li {
+        margin: 2px 0;
+      }
+      
+      code {
+        background: #f1f5f9;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-size: 11px;
+        font-family: monospace;
+      }
+      
+      pre {
+        background: #f8fafc;
+        padding: 8px;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 8px 0;
+        
+        code {
+          background: none;
+          padding: 0;
+        }
+      }
+      
+      blockquote {
+        border-left: 3px solid #cbd5e1;
+        padding-left: 12px;
+        margin: 8px 0;
+        color: #64748b;
+        font-style: italic;
+      }
+      
+      // 表格样式 - 添加边框
+      .markdown-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 8px 0;
+        font-size: 12px;
+        
+        th, td {
+          border: 1px solid #d1d5db;
+          padding: 6px 8px;
+          text-align: left;
+        }
+        
+        th {
+          background-color: #f9fafb;
+          font-weight: 600;
+          color: #1f2937;
+        }
+        
+        td {
+          color: #374151;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #f9fafb;
+        }
+      }
+    }
+  }
+
+  // Report 卡片样式（基于 webpage 卡片样式，但没有 URL 部分）
+  .report-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    // Summary 部分样式
+    .report-summary-section {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: -15px; // 减少与下方 markdown 部分的间距
+      
+      .quote-icon {
+        width: 20px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        margin-right: 4px;
+      }
+      
+      .report-summary {
+        font-size: 18px; // 调整为 18px
+        color: #000000; // 改为黑色
+        line-height: 1.5;
+        font-style: normal; // 去除斜体
+        flex: 1;
+      }
+    }
+    
+    // Markdown 内容部分样式
+    .report-markdown-section {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #374151;
+      
+      h1, h2, h3, h4, h5, h6 {
+        margin: 12px 0 6px 0;
+        color: #1f2937;
+        font-weight: 600;
+      }
+      
+      h1 { font-size: 16px; }
+      h2 { font-size: 15px; }
+      h3 { font-size: 14px; }
+      h4, h5, h6 { font-size: 13px; }
+      
+      p {
+        margin: 6px 0;
+      }
+      
+      ul, ol {
+        margin: 6px 0;
+        padding-left: 16px;
+      }
+      
+      li {
+        margin: 2px 0;
+      }
+      
+      code {
+        background: #f1f5f9;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-size: 11px;
+        font-family: monospace;
+      }
+      
+      pre {
+        background: #f8fafc;
+        padding: 8px;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 8px 0;
+        
+        code {
+          background: none;
+          padding: 0;
+        }
+      }
+      
+      blockquote {
+        border-left: 3px solid #e2e8f0;
+        padding-left: 12px;
+        margin: 8px 0;
+        color: #64748b;
+        font-style: italic;
+      }
+      
+      // 表格样式 - 添加边框
+      .markdown-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 8px 0;
+        font-size: 12px;
+        
+        th, td {
+          border: 1px solid #d1d5db;
+          padding: 6px 8px;
+          text-align: left;
+        }
+        
+        th {
+          background-color: #f9fafb;
+          font-weight: 600;
+          color: #1f2937;
+        }
+        
+        td {
+          color: #374151;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #f9fafb;
+        }
+      }
+    }
+  }
+
+  .trace-result-content {
+    padding: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13px;
+    line-height: 1.5;
+
+    .trace-result-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 153, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .content-icon {
+        width: 18px;
+        height: 18px;
+      }
+    }
+
+    .trace-result-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .trace-result-title {
+      font-weight: 600;
+      color: #111827;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .trace-result-text {
+      color: #374151;
+      font-size: 13px;
+      line-height: 1.45;
+      max-height: 96px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .trace-result-lacking-support {
+    padding: 4px 16px 16px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-start;
+
+    .warning-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .lacking-support-text {
+      font-size: 16px;
+      font-weight: 500;
+      color: #000000;
+    }
+  }
+
+  // web_search 卡片的特殊布局样式
+  .web-search-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    // 搜索框区域
+     .search-box {
+       display: flex;
+       align-items: center;
+       gap: 8px;
+       
+       .search-icon {
+         width: 16px;
+         height: 16px;
+         flex-shrink: 0;
+         object-fit: contain;
+       }
+       
+       .search-query {
+         flex: 1;
+         font-size: 13px;
+         color: #374151;
+         line-height: 1.4;
+         word-wrap: break-word;
+         overflow-wrap: break-word;
+         padding: 6px 8px;
+         background: #ffffff;
+         border: 1px solid #e5e7eb;
+         border-radius: 6px;
+       }
+     }
+    
+    // 搜索结果列表
+     .search-results {
+       display: flex;
+       flex-direction: column;
+       gap: 6px;
+       
+       .search-result-item {
+         display: flex;
+         align-items: flex-start;
+         gap: 8px;
+         padding: 6px 0;
+         
+         .result-number {
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            background: #9ca3af;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-top: 2px;
+          }
+         
+         .result-content {
+           flex: 1;
+           
+           .result-title {
+             font-size: 12px;
+             font-weight: 600;
+             color: #1f2937;
+             line-height: 1.3;
+             margin-bottom: 2px;
+             word-wrap: break-word;
+             overflow-wrap: break-word;
+
+            // 重置 Markdown 标题的默认间距，避免与序号垂直错位
+            h1, h2, h3, h4, h5, h6 {
+              margin: 0;
+              padding: 0;
+              font-size: inherit;
+              line-height: inherit;
+              font-weight: inherit;
+              display: inline;
+            }
+
+            p {
+              margin: 0;
+              padding: 0;
+              display: inline;
+            }
+           }
+           
+           .result-url {
+              font-size: 10px;
+              color: #9ca3af;
+              line-height: 1.2;
+              margin-bottom: 3px;
+              word-wrap: break-word;
+              overflow-wrap: break-word;
+              font-family: monospace;
+            }
+           
+           .result-snippet {
+             font-size: 11px;
+             color: #6b7280;
+             line-height: 1.4;
+             word-wrap: break-word;
+             overflow-wrap: break-word;
+           }
+         }
+       }
+     }
+  }
+}
+
+// Paragraph with blockquote styling
+.paragraph-with-blockquote {
+  margin: 0.5em 0;
+  line-height: 1.6;
+}
+
+// excerpt 引用块样式
+.excerpt-block {
+  margin: 8px 0;
+  padding: 12px 16px;
+  border-left: 4px solid #6b7280;
+  background-color: #f8fafc;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  color: #475569;
+  
+  // 嵌套的 markdown 内容样式
+  p {
+    margin: 0 0 8px 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // 嵌套的引用块样式
+  .excerpt-block {
+    margin: 4px 0;
+    padding: 8px 12px;
+    border-left-color: #64748b;
+    background-color: #f1f5f9;
+  }
+  
+  // 嵌套的引用标记样式 - 统一为灰色圆形
+  .citation-block {
+    display: inline-block;
+    vertical-align: middle; // 添加垂直对齐，避免 hover 时位置跳动
+    background-color: #666; // 灰色背景
+    color: white; // 白色字体
+    padding: 0; // 去掉padding，用固定宽高
+    border-radius: 50%; // 圆形
+    font-size: 11px; // 稍微增大字体
+    font-weight: 600;
+    margin: 0 2px; // 左右间距
+    border: none; // 去掉边框
+    opacity: 1; // 完全不透明
+    line-height: 14px; // 与高度一致，垂直居中
+    width: 14px; // 稍微缩小的固定宽度
+    height: 14px; // 固定高度
+    text-align: center; // 水平居中
+    // 移除 position: relative 和 top: 0，避免 hover 时布局重新计算导致位置跳动
+  }
+}
+
+// 左上角圆形
+.card-circle {
+  position: absolute;
+  top: -15px;
+  left: -19px; // 调整左边距，适应缩小的左侧区域
+  width: 50px;
+  height: 50px;
+  // background 通过内联样式动态设置
+  border: 1px solid #000000; // 减少圆形边框粗细到1px
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  box-shadow:
+    6px 10px 22px rgba(15, 23, 42, 0.18), // 主阴影：向右下投射
+    2px 4px 8px rgba(15, 23, 42, 0.28); // 二次柔化：模拟环境光
+  transition: box-shadow 220ms ease;
+  
+  .circle-icon {
+    width: 32px; // SVG图标宽度
+    height: 32px; // SVG图标高度
+    object-fit: contain; // 保持图片比例，完整显示
+    filter: none; // 移除任何滤镜效果
+    // SVG特有的优化属性
+    display: block; // 确保SVG正确显示
+    pointer-events: none; // 防止图标干扰点击事件
+  }
+}
+
+// 卡片主体
+.card-main-body {
+  flex: 1;
+  min-height: 0; // 关键修复：作为flex item，允许其收缩
+  display: flex;
+  flex-direction: column;
+  padding: 6px 8px 8px 8px; // 减少所有方向的padding，让内容更接近边框
+  color: #374151;
+}
+
+// 上区域：头部区域（左右分布）
+.card-header {
+  display: flex;
+  height: 35px; // 减少高度，更紧凑
+  margin-bottom: 6px; // 减少底部间距
+  
+  .card-header-left {
+    width: 32px; // 缩小左侧留空区域从40px到32px
+    flex-shrink: 0;
+  }
+  
+  .card-header-right {
+    flex: 1;
+    display: flex;
+    align-items: center; // 垂直居中
+    overflow: hidden; // 确保超长内容不会溢出
+  }
+}
+
+// 标题区域（现在在右区域内）
+.card-title {
+  font-size: 20px; // 从22px减少到20px
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.3;
+  white-space: nowrap; // 强制单行显示
+  overflow: hidden; // 隐藏超出部分
+  text-overflow: ellipsis; // 显示省略号
+  width: 100%;
+  max-width: 100%; // 确保不超出容器宽度
+}
+
+// 下区域：内容区域
+  .card-content {
+    flex: 1;
+    // height: 130px; // Removed: Conflicts with flex: 1. Let flexbox determine the height.
+    min-height: 0; // 关键修复：允许flex item收缩，防止内容溢出
+    overflow-y: auto; // 启用垂直滚动
+    overflow-x: visible; // 允许水平溢出，避免图标被截断
+    margin: 0; // 移除外边距
+    padding: 0; // 移除内边距
+    
+    // trace support highlight 样式
+    .trace-support-highlight {
+      background-color: #FFE5B4 !important;
+      color: #000000 !important;
+      padding: 2px 4px !important;
+      border-radius: 2px !important;
+      display: inline !important;
+      
+      // 确保内部段落正确显示（如果 highlight 内容包含段落）
+      p {
+        margin: 0 !important;
+        display: inline !important;
+        background-color: inherit !important;
+        color: inherit !important;
+        padding: 0 !important;
+      }
+      
+      // 确保其他块级元素也能正确显示
+      div, h1, h2, h3, h4, h5, h6, ul, ol, li {
+        display: inline !important;
+        background-color: inherit !important;
+        color: inherit !important;
+      }
+    }
+  
+
+  .card-content-display {
+    // height: 100%; // Removed to allow parent to control scrolling
+    // overflow-y: auto; // Removed to allow parent to control scrolling
+    
+    pre {
+      margin: 0;
+      font-size: 12px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      color: #4b5563; // 深灰色文字
+      line-height: 1.4;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+  
+  // user_requirement 卡片的特殊布局样式
+  .user-requirement-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px 6px 4px 2px;
+    // height: 100%; // Removed to allow content to determine height
+    // overflow-y: auto; // Removed, scrolling is handled by parent .card-content
+    
+    .user-requirement-main {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    
+    .user-requirement-icon {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -6px; // 移除负边距，避免图标被截断
+      
+      .content-icon {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        filter: none;
+      }
+    }
+    
+    .user-requirement-text {
+      flex: 1;
+      font-size: 18px;
+      line-height: 1.5;
+      color: #374151;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+    
+    .user-requirement-references {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+      padding-left: 26px; // 与文字对齐（图标宽度32px - 负边距6px = 26px）
+    }
+  }
+
+  // visualization 卡片的特殊布局样式
+  .visualization-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 4px 6px 4px 2px;
+    height: 100%;
+    
+    .visualization-icon {
+       flex-shrink: 0;
+       width: 32px;
+       height: 32px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       margin-left: -3px;
+      
+      .content-icon {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        filter: none;
+      }
+    }
+    
+    .visualization-screenshot {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      height: 100%;
+      
+      .visualization-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: auto;
+        image-rendering: high-quality;
+        image-rendering: -webkit-optimize-quality;
+        -ms-interpolation-mode: bicubic;
+        filter: contrast(1.05) saturate(1.1);
+        transform: translateZ(0);
+        backface-visibility: hidden;
+      }
+      
+      .no-content {
+        font-size: 14px;
+        color: #9ca3af;
+        font-style: italic;
+      }
+      
+      .html-screenshot-container {
+          width: 100%;
+          height: auto;
+          
+          img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            image-rendering: auto;
+            image-rendering: high-quality;
+            image-rendering: -webkit-optimize-quality;
+            -ms-interpolation-mode: bicubic;
+            filter: contrast(1.05) saturate(1.1);
+            transform: translateZ(0);
+            backface-visibility: hidden;
+          }
+          
+          .screenshot-loading,
+          .screenshot-error {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #6b7280;
+            font-style: italic;
+          }
+          
+          .screenshot-error {
+            color: #ef4444;
+          }
+        }
+    }
+  }
+
+  // target_task 卡片的特殊布局样式
+  .target-task-content {
+    padding: 8px;
+    // height: 100%; // Removed to allow parent to control scrolling
+    // overflow-y: auto; // Removed to allow parent to control scrolling
+    
+    .todo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px; // 减少间隔从6px到3px
+      
+      .todo-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px; // 减少图标和文字间隔从8px到6px
+        padding: 2px 0; // 减少上下内边距从4px到2px
+        font-size: 12px;
+        line-height: 1.3; // 减少行高从1.4到1.3
+        
+        .todo-icon {
+          flex-shrink: 0;
+          width: 24px; // 固定图标容器宽度，为最大的in_progress图标预留空间
+          height: 24px; // 增加容器高度以容纳大图标
+          display: flex;
+          align-items: center;
+          justify-content: center; // 改为居中对齐，确保所有图标都在容器中心
+          font-size: 11px; // 减少图标字体大小从12px到11px
+          margin-top: 1px;
+        }
+        
+        // SVG图标样式
+        .todo-icon-svg {
+          width: 14px;
+          height: 14px;
+          margin-right: 0; // 移除右边距，因为已经有gap控制间距
+          flex-shrink: 0;
+          object-fit: contain;
+          
+          // 移除这里的in_progress特殊处理，统一在下面的状态样式中处理
+        }
+        
+        .todo-text {
+          flex: 1;
+          color: #374151;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          margin-left: 0; // 恢复正常的margin，因为现在图标容器应该统一了
+        }
+        
+        // 不同状态的样式
+        &.todo-completed {
+          .todo-icon {
+            color: #10b981;
+            width: 24px !important; // 强制统一宽度
+            height: 24px !important; // 强制统一高度
+          }
+          .todo-text {
+            text-decoration: line-through;
+            color: #9ca3af;
+          }
+        }
+        
+        &.todo-in_progress {
+          .todo-icon {
+            color: #f59e0b;
+            width: 24px !important; // 强制统一宽度
+            height: 24px !important; // 强制统一高度
+          }
+          .todo-text {
+            color: #374151;
+            font-weight: 500;
+            font-size: 16px; // 增大文字尺寸
+          }
+          
+          // 为in_progress状态的SVG图标特殊处理
+          .todo-icon-svg[alt="in_progress"] {
+            width: 20px !important;  // 减小尺寸，因为SVG内部有旋转变换
+            height: 20px !important;
+            object-fit: contain !important;  // 确保图标完全包含在容器内
+            margin-left: -5px; // 稍微左移，让文字对齐
+          }
+        }
+        
+        &.todo-interrupted {
+          .todo-icon {
+            color: #ef4444;
+            width: 24px !important; // 强制统一宽度
+            height: 24px !important; // 强制统一高度
+          }
+          .todo-text {
+            color: #374151;
+            font-style: italic;
+          }
+        }
+        
+        &.todo-pending {
+          .todo-icon {
+            color: #6b7280;
+            width: 24px !important; // 强制统一宽度
+            height: 24px !important; // 强制统一高度
+          }
+          .todo-text {
+            color: #374151;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 卡片动画样式
+.card-node {
+  // 基础过渡效果 - 应用于卡片背景、边框和阴影（尺寸过渡在特定状态控制）
+  transition: background-color 400ms ease,
+              border 400ms ease,
+              box-shadow 400ms ease,
+              transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  
+  // 设置变换原点为顶部中心，实现从上向下的收起效果
+  transform-origin: center top;
+  
+  // 动画状态下的样式
+  &.animating {
+    // 在动画过程中禁用指针事件，防止重复点击
+    pointer-events: none;
+    
+    // 内容元素的过渡效果 - 使用与布局动画一致的缓动函数
+    .card-main-body,
+    .card-circle,
+    .card-add-button,
+    .card-collapsed-content {
+      transition: opacity 400ms cubic-bezier(0.23, 1, 0.32, 1),
+                  transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+  }
+  
+  // 收起动画 - 从展开态到收起态，平滑过渡到收起态尺寸
+  &.animation-collapsing {
+    // 尺寸目标由逻辑尺寸控制，不强制固定值
+    // 创建平滑的边框收缩效果：边框逐渐变细并变透明
+    background: rgba(255, 255, 255, 0) !important; // 背景逐渐变透明
+    border: 0px solid rgba(0, 0, 0, 0) !important; // 边框逐渐变细并变透明
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0) !important; // 阴影逐渐消失
+    border-radius: 15px !important; // 动画过程中的胶囊型圆角（动画目标高度30px的一半）
+    transform-origin: bottom center !important; // 从下向上收缩
+    // 尺寸变化应立即生效，避免二次布局：移除宽高过渡
+    transition: background-color 400ms cubic-bezier(0.23, 1, 0.32, 1),
+                border-width 400ms cubic-bezier(0.23, 1, 0.32, 1),
+                border-color 400ms cubic-bezier(0.23, 1, 0.32, 1),
+                border-radius 400ms cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 400ms cubic-bezier(0.23, 1, 0.32, 1),
+                transform 400ms cubic-bezier(0.23, 1, 0.32, 1) !important;
+    
+    // 展开态内容立即淡出
+    .card-main-body,
+    .card-circle,
+    .card-add-button {
+      opacity: 0;
+      transform: translateY(-3px) scale(0.98);
+      transition-delay: 0s;
+    }
+    
+    // 收起态内容从略微收缩状态淡入，添加延迟确保平滑过渡
+    .card-collapsed-content {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition-delay: 0.08s;
+    }
+  }
+  
+  // 展开动画 - 从收起态到展开态，平滑过渡到展开态尺寸
+  &.animation-expanding {
+    // 展开时宽度应立即跳到正确值，不进行宽度过渡
+    // 快速恢复背景、边框和阴影
+    background: #ffffff !important;
+    border: 2px solid #000000 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    // 背景和边框快速出现，尺寸正常过渡
+    transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1),
+                background-color 200ms ease,
+                border 200ms ease,
+                box-shadow 200ms ease,
+                transform 400ms cubic-bezier(0.23, 1, 0.32, 1) !important;
+    
+    // 收起态内容立即淡出
+    .card-collapsed-content {
+      opacity: 0;
+      transform: translateY(3px) scale(0.98);
+      transition-delay: 0s;
+    }
+    
+    // 展开态内容从略微收缩状态淡入，添加延迟确保平滑过渡
+    .card-main-body,
+    .card-circle,
+    .card-add-button {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      transition-delay: 0.08s;
+    }
+  }
+  
+  // 动画完成后的状态 - 确保所有元素都完全可见
+  &:not(.animating) {
+    .card-main-body,
+    .card-circle,
+    .card-add-button,
+    .card-collapsed-content {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+// 优化动画性能
+.card-node.animating * {
+  // 启用硬件加速，提升动画性能
+  will-change: transform, opacity;
+  // 使用GPU加速
+  transform: translateZ(0);
+}
+
+// 连接点样式 - 隐藏显示但保留功能，包含动画效果
+.card-handle {
+  width: 0px;
+  height: 0px;
+  border: none; // 隐藏边框
+  background: transparent; // 透明背景
+  border-radius: 50%;
+  opacity: 0; // 完全透明
+  pointer-events: none; // 禁用鼠标事件
+  
+  // 动画过渡效果
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  
+  // 收起态下的连接点样式调整
+  .card-node.collapsed & {
+    transform: scale(0.8);
+  }
+  
+  &.card-handle-input {
+    top: -4px;
+  }
+  
+  &.card-handle-output {
+    bottom: -4px;
+  }
+  
+  // 收起状态下的Handle位置调整
+  .card-node.collapsed & {
+    &.card-handle-input {
+      top: 0px; // 正好在卡片顶部边界
+    }
+    
+    &.card-handle-output {
+      bottom: 0px; // 正好在卡片底部边界
+    }
+  }
+  
+}
+
+// 弹出菜单样式
+.popup-menu {
+  position: absolute;
+  right: 0;
+  bottom: 40px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 4px 0;
+  min-width: 120px;
+  z-index: 1000;
+  font-size: 12px;
+
+  .menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    color: #374151;
+
+    &:hover {
+      background-color: #f3f4f6;
+    }
+
+    &:active {
+      background-color: #e5e7eb;
+    }
+  }
+}
+
+// web_search 卡片样式
+.web-search-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  
+  .search-box {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    flex-shrink: 0;
+    
+    .search-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+    
+    .search-query {
+      font-size: 12px;
+      color: #374151;
+      font-weight: 500;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.3;
+    }
+  }
+  
+  .search-results {
+    flex-shrink: 0;
+    padding: 0 12px 8px 12px;
+    
+    .search-result-item {
+      display: flex;
+      margin-bottom: 8px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .result-number {
+        width: 16px;
+        height: 16px;
+        background: #f3f4f6;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 600;
+        color: #6b7280;
+        margin-right: 8px;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+      
+      .result-content {
+        flex: 1;
+        min-width: 0;
+        
+        .result-title {
+          font-size: 11px;
+          font-weight: 600;
+          color: #1f2937;
+          margin-bottom: 2px;
+          word-break: break-word;
+          overflow-wrap: break-word;
+          line-height: 1.3;
+        }
+        
+        .result-url {
+          font-size: 10px;
+          color: #059669;
+          margin-bottom: 2px;
+          word-break: break-all;
+          overflow-wrap: break-word;
+          line-height: 1.2;
+        }
+        
+        .result-snippet {
+          font-size: 10px;
+          color: #6b7280;
+          line-height: 1.3;
+          word-break: break-word;
+          overflow-wrap: break-word;
+        }
+      }
+    }
+  }
+}
+
+// 呼吸动画关键帧
+@keyframes breathing {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// ReactFlow 连接线样式
+.react-flow__edge-path {
+  stroke: #9ca3af;
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #3b82f6;
+  stroke-width: 3;
+}
+
+// 收起态样式
+.card-node.collapsed {
+  /* 尺寸由 ReactFlow 节点样式控制，避免与 ELK 数值不一致 */
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start; // 确保内容左对齐
+  padding: 0;
+  overflow: visible; // 允许重叠效果
+  background: transparent; // 去除背景
+  border: none; // 去除外边框
+  box-shadow: none; // 去除阴影
+  
+  .card-collapsed-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; // 确保内容左对齐
+    width: fit-content; // 改为适应内容宽度，而不是100%
+    height: 100%;
+    position: relative;
+    
+    .card-collapsed-icon {
+      width: 28px; // 从26px增加到28px
+      height: 28px; // 从26px增加到28px
+      border-radius: 50%;
+      // background 通过内联样式动态设置
+      border: 2px solid #000000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 4; // 圆形在最上层
+      // 参考展开态圆形的双层阴影，缩小偏移与模糊，营造轻微的右下方立体感
+      box-shadow:
+        4px 7px 14px rgba(15, 23, 42, 0.18),
+        1px 2px 4px rgba(15, 23, 42, 0.28);
+      transition: box-shadow 220ms ease;
+      
+      img {
+        width: 18px; // 保持18px，适应28px图标容器
+        height: 18px; // 保持18px，适应28px图标容器
+      }
+    }
+    
+    .card-collapsed-title {
+      width: 160px; // 增加宽度以容纳更多标题内容
+      height: 30px; // 从36px减少到30px
+      background: #ffffff;
+      border: 2px solid #000000;
+      border-radius: 15px; // 胶囊型：高度的一半作为圆角半径
+      display: flex;
+      align-items: center;
+      padding: 0 16px 0 24px; // 调整padding：右侧从20px减少到16px，左侧从28px减少到24px
+      margin-left: -14px; // 调整重叠距离，从-16px到-14px
+      font-size: 9px; // 从10px减少到9px
+      font-weight: 500;
+      color: #1f2937;
+      z-index: 1; // 标题框在下层
+      box-sizing: border-box; // 确保padding计算正确
+      position: relative;
+      isolation: isolate;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      
+      // 遮罩：完整的圆形，与圆形图标完全重合，覆盖矩形与圆重叠的部分
+      &::after {
+        content: '';
+        position: absolute;
+        left: -19px;
+        top: -1px;
+        width: 30px; // 稍微小一点，从32px减少到30px
+        height: 30px; // 稍微小一点，从32px减少到30px
+        background: #ffffff; // 与矩形背景色一致
+        border-radius: 50%; // 完整圆形，与圆形图标完全重合
+        z-index: 2; // 遮罩在矩形之上，但在圆形之下（圆形z-index:4，矩形z-index:1）
+        pointer-events: none; // 不阻挡点击事件
+        opacity: 1 !important; // 遮罩保持完全不透明，确保始终隐藏重叠的边框
+      }
+      
+      .card-collapsed-title-text {
+        white-space: nowrap; // 防止换行
+        overflow: hidden; // 隐藏溢出内容
+        text-overflow: ellipsis; // 显示省略号
+        width: 100%; // 占满父容器
+        display: block; // 确保是块级元素
+        position: relative;
+        z-index: 3; // 文本在遮罩之上
+      }
+    }
+  }
+  
+  &.highlighted::before {
+    display: none;
+  }
+  
+  // 折叠态的色环：相对于标题胶囊定位，使用inset自适应
+  &.highlighted .card-collapsed-title::before {
+    content: '';
+    position: absolute;
+    inset: -5px; // 相对于标题胶囊向外扩展5px，自适应标题胶囊的大小
+    border-radius: calc(15px + 5px); // 基于标题胶囊的border-radius（15px）加上inset值（5px）
+    border: 4px solid var(--card-highlight-color);
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    z-index: -1; // 确保在后面，不遮挡内容
+  }
+  
+  // 收起态下隐藏其他元素
+  .card-header,
+  .card-body,
+  .card-actions,
+  .card-add-button,
+  .card-circle {
+    display: none;
+  }
+  
+  // 收起态的悬停效果
+  &:hover {
+    .card-collapsed-icon {
+      border-color: #333333;
+      background: #f1f5f9;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-collapsed-title {
+      border-color: #333333;
+      background: #f9fafb;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+  }
+  
+  // 收起态的选中效果
+  &.selected {
+    .card-collapsed-icon {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.1);
+    }
+    
+    .card-collapsed-title {
+      border-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.05);
+    }
+  }
+  
+  // in_progress 状态的呼吸效果
+  &.in-progress {
+    .card-collapsed-icon {
+      animation: breathing 2s ease-in-out infinite;
+    }
+    
+    .card-collapsed-title {
+      animation: breathing 2s ease-in-out infinite;
+    }
+  }
+  
+  // 收起态的选择模式样式
+  &.selection-mode {
+    &:hover {
+      .card-collapsed-icon {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.1);
+      }
+      
+      .card-collapsed-title {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.05);
+      }
+    }
+    
+    &.selected-for-action {
+      .card-collapsed-icon {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.2);
+      }
+      
+      .card-collapsed-title {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.1);
+      }
+      
+      &::after {
+        content: '✓';
+        position: absolute;
+        top: 4px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        background-color: #10b981;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        z-index: 10;
+      }
+    }
+  }
+}

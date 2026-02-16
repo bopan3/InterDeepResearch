@@ -1,0 +1,12 @@
+.card-detail-connection {
+  // SVG 容器样式已在组件内联样式中定义
+}
+
+.connection-trapezoid {
+  // 添加平滑的过渡效果
+  transition: opacity 0.3s ease;
+  
+  // 可以添加 hover 效果（如果需要）
+  // 注意：由于 pointerEvents: 'none'，hover 可能不会触发
+}
+

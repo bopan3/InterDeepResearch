@@ -1,0 +1,223 @@
+.main-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  border-left: 3px solid #000000;
+  border-right: 3px solid #000000;
+  border-bottom: 3px solid #000000;
+}
+
+.global-banner {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  z-index: 12000;
+  pointer-events: none;
+
+  &.error {
+    background: #fee2e2;
+    border-color: #fecaca;
+    color: #b91c1c;
+  }
+
+  &.info {
+    background: #e0f2fe;
+    border-color: #bae6fd;
+    color: #0369a1;
+  }
+}
+
+// 顶部 Head Bar
+.head-bar {
+  width: 100%;
+  height: 3%;
+  min-height: 40px;
+  background-color: #000000;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  gap: 12px;
+  font-size: calc((100% - 8px) * 0.85);
+  z-index: 500; // 确保在 ToolMessageConnection (z-index: 450) 之上
+  position: relative;
+  
+  .head-bar-logo {
+    height: calc(100% - 14px);
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+  
+  .head-bar-title {
+    height: calc(100% - 12px); // 稍微缩小一点
+    width: auto;
+    display: block;
+    object-fit: contain;
+    margin-top: 6px; // 稍微下移一点
+  }
+  
+  .head-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+  
+  .head-bar-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+    
+    &:hover:not(:disabled) {
+      opacity: 0.7;
+    }
+    
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    
+    img {
+      height: 20px;
+      width: 20px;
+      display: block;
+    }
+  }
+  
+  .head-bar-divider {
+    width: 1px;
+    height: 24px;
+    background-color: #ffffff;
+    margin: 0 4px;
+  }
+}
+
+// 内容区域
+.content-area {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+// 左侧聊天面板
+.chat-panel {
+  width: 22%;
+  height: 100%;
+  background-color: #ffffff;
+  border-right: 3px solid #000000; // 改为黑色分割线
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+// 中间ReactFlow面板
+.reactflow-panel {
+  flex: 1;
+  height: 100%;
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+// 分屏视图容器
+.split-view-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+// 分屏视图左半边（WhiteBoardView）
+.split-view-left {
+  width: 50%;
+  height: 100%;
+  border-right: 1px solid #000000; // 改为黑色分割线
+  overflow: hidden;
+}
+
+// 分屏视图右半边（ReactFlowView）
+.split-view-right {
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+
+// 右侧详情面板
+.detail-panel {
+  height: 100%;
+  background-color: #ffffff;
+  border-left: 3px solid #000000; // 改为黑色分割线
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-left-width 0.3s ease,
+              border-left-color 0.3s ease;
+  position: relative;
+  
+  &.open {
+    width: 22%;
+    border-left-width: 3px;
+    border-left-color: #000000;
+    
+    // 内容滑入动画
+    > * {
+      animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+  
+  &.closed {
+    width: 0;
+    pointer-events: none; // 关闭时禁用交互
+    border-left-width: 0;
+    border-left-color: transparent;
+    
+    // 内容滑出动画
+    > * {
+      animation: slideOutToRight 0.3s ease-in;
+    }
+  }
+}
+
+// 从右侧滑入动画
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// 向右侧滑出动画
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+}

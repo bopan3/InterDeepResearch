@@ -1,0 +1,188 @@
+.card-selector {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+
+  .card-selector-header {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .selector-title {
+      font-weight: 600;
+      color: #1976d2;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 11px;
+    }
+
+    .card-selector-search-input {
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      height: 32px;
+      padding: 0 8px;
+      font-size: 12px;
+      color: #333;
+      outline: none;
+      transition: border-color 0.2s ease;
+      width: 100%;
+
+      &::placeholder {
+        color: #999;
+        font-size: 12px;
+      }
+
+      &:focus {
+        border-color: #1976d2;
+        box-shadow: 0 0 0 1px rgba(25, 118, 210, 0.2);
+      }
+
+      &:hover {
+        border-color: #bbb;
+      }
+    }
+  }
+
+  .card-list {
+    padding: 0;
+    max-height: 240px;
+    overflow-y: auto;
+
+    .card-item {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background-color 0.2s ease;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &.selected {
+        background-color: #e3f2fd !important;
+      }
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      .card-info {
+        .card-id {
+          font-weight: 600;
+          color: #333;
+          font-size: 13px;
+          margin-bottom: 2px;
+        }
+
+        .agent-info {
+          color: #666;
+          font-size: 11px;
+          font-weight: 500;
+        }
+      }
+
+      .card-type {
+        color: #888;
+        font-size: 10px;
+        font-style: italic;
+      }
+
+      .card-content-preview {
+        margin-top: 4px;
+        
+        .card-content-markdown {
+          font-size: 11px !important;
+          line-height: 1.4;
+          color: #555;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          line-clamp: 3; // 标准属性，用于兼容性
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-height: calc(1.4em * 3); // 三行的高度
+          
+          // 确保所有元素都使用统一的字体大小
+          * {
+            font-size: 11px !important;
+          }
+          
+          // 简化 markdown 样式
+          strong {
+            font-weight: 600;
+            color: #333;
+            font-size: 11px !important;
+          }
+          
+          em {
+            font-style: italic;
+            color: #666;
+            font-size: 11px !important;
+          }
+          
+          code {
+            background: #f5f5f5;
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-size: 10px !important;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+          }
+          
+          // 移除默认的段落间距
+          span {
+            display: inline;
+            font-size: 11px !important;
+          }
+          
+          // 覆盖可能的全局样式
+          p, div, span, h1, h2, h3, h4, h5, h6 {
+            font-size: 11px !important;
+            margin: 0;
+            padding: 0;
+          }
+          
+          // 强制覆盖所有可能的加粗样式
+          b, strong, h1, h2, h3, h4, h5, h6 {
+            font-weight: normal !important;
+            font-size: 11px !important;
+          }
+          
+          // 覆盖可能的 HTML 标签样式
+          em, i, u, mark {
+            font-weight: normal !important;
+            font-size: 11px !important;
+          }
+        }
+      }
+    }
+  }
+
+  .no-results {
+    padding: 16px;
+    text-align: center;
+    color: #999;
+  }
+}
+
+// 滚动条样式
+.card-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.card-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.card-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

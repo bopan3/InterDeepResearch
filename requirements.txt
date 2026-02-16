@@ -1,0 +1,10 @@
+# Core dependencies for IDR MVP
+flask
+flask-cors
+simple-websocket
+requests
+beautifulsoup4
+litellm
+pyyaml
+json-repair
+rapidfuzz

@@ -1,0 +1,91 @@
+- type: function
+  function:
+    name: search_web
+    description: |
+      Call this tool to use google search to search the web for information. This tool will return the goolge search result as a new info card.
+      You should enter the google search terms to use for the web search in the search_term parameter.
+    parameters:
+      type: object
+      properties:
+        search_term:
+          type: string
+          description: The google search terms to use for the web search
+      required:
+        - search_term
+
+- type: function
+  function:
+    name: scrape_webpage
+    description: |
+      Call this tool to launch an info_collect_agent to scrape the web page corresponding to the webpage_url parameter. This tool will scrape the main content of the webpage and save it as a new info card. 
+      You should enter the url of the webpage to scrape in the webpage_url parameter.
+    parameters:
+      type: object
+      properties:
+        webpage_url:
+          type: string
+          description: The url of the webpage to scrape.
+      required:
+        - webpage_url
+
+- type: function
+  function:
+    name: create_note
+    description: |
+      Call this tool to launch an info_process_agent to create a note based on one or several info cards that have been created.
+      You should enter the input_info_card_ids to specify the info cards that the new note will be based on. 
+      The note can only based on the information in the input info cards. It can only be copy, reorganization, synthesis, or reasonable interpretation of the information in the input info cards. You should not create any new information or make up any information that is not in the input info cards.
+      You should enter the title (describe the main content of the note) for the new note in the title_for_note parameter.
+      You should enter the detailed instruction for the info_process_agent to write the note in the instruction_for_agent parameter.
+      You should set the is_final_note parameter to true if the new note is the final note for the latest user request.
+      You should set the is_progress_summary_note parameter to true if the new note is a progress summary note that summarizes the current progress based on several previous notes. If is_progress_summary_note is set to true, you should additionally enter the concise_progress_summary parameter to provide a very concise one sentence progress summary of what you have made since the last time you made a progress summary note (or since the start of the research if you have not made any progress summary note yet).
+
+    parameters:
+      type: object
+      properties:
+        input_info_card_ids:
+          type: array
+          description: The list of the ids of the info cards that the new note will be based on.
+          items:
+            type: string
+            description: The id of the info card that the new note will be based on.
+        title_for_note:
+          type: string
+          description: The title for the new note.
+        instruction_for_agent:
+          type: string
+          description: The instruction for the info_process_agent agent to create the note.
+        is_final_note:
+          type: boolean
+          description: Whether the new note is the final note for the latest user request.
+        is_progress_summary_note:
+          type: boolean
+          description: Whether the new note is a progress summary note that summarizes the current progress based on several previous notes.
+        concise_progress_summary:
+          type: string
+          description: A very concise one sentence progress summary of what you have made since the last time you made a progress summary note (or since the start of the research if you have not made any progress summary note yet).
+
+      required:
+        - input_info_card_ids
+        - title_for_note
+        - instruction_for_agent
+        - is_progress_summary_note
+        - is_final_note
+
+- type: function
+  function:
+    name: finish_turn
+    description: |
+      Call this tool when the user's latest request is completely resolved and you want to finish your turn. 
+      The tool has no input parameters. You should just make a final_summary of what you have made since the latest user request before the tool call. Note that the final_summary should:
+      - Be very concise, non-repetitive, and high-signal, since user can read the final report card and other info cards to get the details.
+      - Explicitly/implicitly explain why you finished the turn.
+      - Use concise bullet points for lists; short paragraphs if needed. Use markdown if you need headings.
+    parameters:
+      type: object
+      properties: 
+        final_summary:
+          type: string
+          description: The final summary of what you have made since the latest user request.
+      required:
+        - final_summary

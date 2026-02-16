@@ -1,0 +1,1837 @@
+.chat-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+// ThinkingAnimation 组件样式
+.thinking-animation {
+  display: inline-flex;
+  align-items: center;
+  font-style: italic;
+  color: #999;
+  opacity: 0.7;
+  
+  .thinking-dots {
+    display: inline-block;
+    min-width: 24px; // 确保有足够空间显示三个点
+    text-align: left;
+    font-weight: bold;
+  }
+}
+
+// 为thinking类型消息添加更大的间距
+.message-container.thinking-message {
+  margin-bottom: 0 !important; // 不需要底部间距，因为它总是最后一条
+  margin-top: 12px !important; // 只增加顶部间距
+  
+  .message-bubble {
+    margin: 6px 0 0 0 !important; // 只增加顶部间距，底部不需要
+    padding: 8px 12px !important; // 增加内边距
+  }
+}
+
+// 添加专门针对assistant_message的样式
+.typewriter-message {
+  margin-bottom: -7px !important; // 与普通agent-message保持一致
+  
+  &.agent-message {
+    margin-bottom: -7px !important; // 与普通agent-message保持一致
+    
+    &:not(:last-child) {
+      margin-bottom: -9px !important; // 与普通agent-message保持一致
+    }
+  }
+  
+  .message-bubble {
+    margin: -3px 0 !important; // 从-6px调整到-3px，增加3px间距
+    padding: 1px 4px !important; // 保持极小的padding
+  }
+}
+
+.chat-messages-section {
+  flex: 1; // 占用剩余空间
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-width: 100%; // 限制最大宽度
+  min-width: 0; // 允许 flex 子元素收缩
+}
+
+// 聊天消息和时间线并排的滚动容器
+.chat-messages-with-progress {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+}
+
+.empty-chat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex: 1;
+}
+
+.welcome-message {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px 20px;
+  
+  .welcome-title {
+    margin: 0 0 16px 0;
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 18px;
+  }
+  
+  .welcome-subtitle {
+    margin: 0;
+    line-height: 1.6;
+    color: #6c757d;
+    font-size: 13px;
+  }
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: -8px;
+  padding: 8px 16px 8px 4px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden; // 防止水平滚动
+  max-width: 100%; // 限制最大宽度
+  min-width: 0; // 允许 flex 子元素收缩
+  width: 100%;
+  
+  .messages-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  
+  .timeline-cell {
+    position: relative;
+    width: 3.5%;
+    min-width: 28px;
+    flex-shrink: 0;
+    margin-right: 4px;
+  }
+  
+  .timeline-seg {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 4px;
+  }
+  
+  .timeline-seg-solid {
+    background-color: #000000;
+  }
+  
+  .timeline-seg-dashed {
+    width: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      #000000 0,
+      #000000 6px,
+      transparent 6px,
+      transparent 10px
+    );
+    background-size: 4px 10px;
+    background-repeat: repeat-y;
+    background-position: 0 0;
+  }
+
+  // 变体：起点（从中部到行底部）
+  .timeline-seg.timeline-seg-start {
+    top: 50%;
+    bottom: 0;
+  }
+
+  // 变体：终点（从行顶部到中部）
+  .timeline-seg.timeline-seg-end {
+    top: 0;
+    bottom: 50%;
+  }
+
+  // 变体：完整贯通（兼容 start+end 同行的情况）
+  .timeline-seg.timeline-seg-full {
+    top: 0;
+    bottom: 0;
+  }
+
+  .timeline-seg-split {
+    width: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-seg-split.timeline-seg-top {
+    position: absolute;
+    top: 0;
+    height: 50%;
+  }
+
+  .timeline-seg-split.timeline-seg-bottom {
+    position: absolute;
+    top: 50%;
+    height: 50%;
+  }
+
+  // 微调：分裂虚线与全段虚线对齐
+  .timeline-seg-split.timeline-seg-dashed {
+    width: 4px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      #000000 0,
+      #000000 6px,
+      transparent 6px,
+      transparent 10px
+    );
+    background-size: 4px 10px;
+    background-repeat: repeat-y;
+    background-position: 0 0;
+  }
+
+  // 中间段：保持全高
+  .timeline-seg.timeline-seg-mid {
+    top: 0;
+    bottom: 0;
+  }
+  
+  .timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: #000000;
+    width: 12px;
+    height: 12px;
+  }
+  
+  .timeline-dot-milestone {
+    background-color: #000000;
+  }
+  
+  .timeline-dot-latest {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #000000;
+  background-color: #ffffff; // 与 ChatView 背景一致，视觉上为“空心”
+    top: auto;
+    bottom: 0;
+    transform: translate(-50%, 50%); // 将空心点中心对齐到行底部
+  }
+  
+  .message-cell {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  // 全局表格样式（确保在所有消息类型中都能应用）
+  table,
+  .markdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    border: 1px solid #d1d5db !important; // 表格外边框
+    
+    th, td {
+      border: 1px solid #d1d5db !important; // 单元格边框
+      padding: 8px 12px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f9fafb !important;
+      font-weight: 600;
+      color: #1f2937 !important;
+      border-bottom: 2px solid #d1d5db !important; // 表头底部加粗边框
+    }
+    
+    td {
+      color: #374151 !important;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9fafb !important; // 偶数行背景色
+    }
+    
+    // 第一行和最后一行的特殊样式
+    thead tr:first-child th {
+      border-top: 2px solid #d1d5db !important; // 表头顶部加粗边框
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: 2px solid #d1d5db !important; // 最后一行底部加粗边框
+    }
+  }
+}
+
+.message {
+  display: flex;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.system,
+.message.error {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 16px 20px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.message.user .message-bubble {
+  background-color: #7BBCBE;
+  color: white;
+  border-bottom-right-radius: 6px;
+}
+
+.message.system .message-bubble {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  border: 1px solid #e9ecef;
+  border-bottom-left-radius: 6px;
+}
+
+.message.error .message-bubble {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-bottom-left-radius: 6px;
+}
+
+.message-content {
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word; // 强制换行，包括长单词和链接
+  overflow-wrap: break-word; // 兼容性更好的换行属性
+  overflow-x: hidden; // 防止水平溢出
+  max-width: 100%; // 限制最大宽度
+  word-break: break-word;
+  font-size: 13px;
+  
+  // Markdown 样式
+  p {
+    margin: 0 0 8px 0;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin: 8px 0 4px 0;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  ul, ol {
+    margin: 4px 0;
+    padding-left: 16px;
+  }
+  
+  li {
+    margin: 2px 0;
+  }
+  
+  code {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  }
+  
+  pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 8px 0;
+    
+    code {
+      background: none;
+      padding: 0;
+    }
+  }
+  
+  blockquote {
+    border-left: 3px solid #ddd;
+    margin: 8px 0;
+    padding-left: 12px;
+    color: #666;
+  }
+  
+  // 表格样式
+  table,
+  .markdown-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    border: 1px solid #d1d5db; // 表格外边框
+    
+    th, td {
+      border: 1px solid #d1d5db; // 单元格边框
+      padding: 8px 12px;
+      text-align: left;
+    }
+    
+    th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      color: #1f2937;
+      border-bottom: 2px solid #d1d5db; // 表头底部加粗边框
+    }
+    
+    td {
+      color: #374151;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9fafb; // 偶数行背景色
+    }
+    
+    // 第一行和最后一行的特殊样式
+    thead tr:first-child th {
+      border-top: 2px solid #d1d5db; // 表头顶部加粗边框
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: 2px solid #d1d5db; // 最后一行底部加粗边框
+    }
+  }
+}
+
+.message-time {
+  font-size: 11px;
+  opacity: 0.7;
+  margin-top: 8px;
+  text-align: right;
+}
+
+.message.system .message-time,
+.message.error .message-time {
+  text-align: left;
+}
+
+// 统一输入区域 - 动态高度，向上扩展
+.unified-input-area {
+  flex: 0 0 auto; // 不占固定比例，由内容决定高度
+  max-height: 40vh; // 设置上界，防止占用过多空间
+  background-color: white; // 改为白色，与消息区融为一体
+  border-top: none; // 去掉分割线
+  display: flex;
+  flex-direction: column;
+  padding: 0 6px 12px 6px;
+  gap: 8px;
+  margin-top: auto; // 关键：让容器贴在父容器底部，向上扩展
+  
+  // 统一的白色输入容器
+  .unified-input-container {
+    background-color: white;
+    border: 1px solid #000000; // 改为正常的黑色框线
+    border-radius: 12px;
+    padding: 0; // 内部元素自己控制padding
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    
+    &:hover {
+      border-color: #000000; // hover时保持黑色
+    }
+    
+    &:focus-within {
+      border-color: #000000; // 聚焦时保持黑色
+      border-width: 1px; // 保持正常粗细
+    }
+  }
+  
+  // 引用区域
+  .reference-section {
+    flex: 0 0 auto; // 根据引用卡片数量自适应高度
+    max-height: 15vh; // 引用区也有上界
+    overflow-y: auto; // 超出时滚动
+    padding: 8px 6px 2px 6px; // 顶部8px，左右6px，底部增加2px空间
+    
+    // 只有当有选中卡片时才显示
+    &:empty {
+      display: none;
+      padding: 0; // 空时不要padding
+    }
+    
+    // 确保引用区域有内容时能够正确显示
+    &:not(:empty) {
+      min-height: auto; // 让高度完全由内容决定
+      // 移除底部分隔线
+    }
+  }
+  
+  // 输入区域
+  .input-section {
+    flex: 0 0 auto; // 根据文字内容自适应高度
+    
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+      
+      .message-input-field {
+        width: 100%;
+        
+        .MuiOutlinedInput-root {
+          background-color: transparent; // 改为透明，因为外层容器已经是白色
+          border: none; // 移除边框，使用外层容器的边框
+          border-radius: 0; // 移除圆角，使用外层容器的圆角
+          padding-right: 50px;
+          padding-left: 16px;
+          padding-top: 12px; // 增加顶部padding
+          padding-bottom: 12px; // 增加底部padding
+          min-height: 48px;
+          
+          &.Mui-focused {
+            .MuiOutlinedInput-notchedOutline {
+              border: none; // 聚焦时也不显示边框
+            }
+          }
+          
+          .MuiOutlinedInput-notchedOutline {
+            border: none; // 完全移除Material-UI的边框
+          }
+          
+          &:hover:not(.Mui-focused) {
+            .MuiOutlinedInput-notchedOutline {
+              border: none; // hover时也不显示边框
+            }
+          }
+        }
+        
+        .MuiInputBase-input {
+          padding: 6px 0 6px 0; // 调整内部文字padding
+          font-size: 13px;
+          line-height: 1.4;
+        }
+      }
+      
+      .input-button-right {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        z-index: 10;
+        
+        .send-button {
+          background-color: #000000;
+          color: white;
+          width: 32px;
+          height: 32px;
+          
+          &:hover {
+            background-color: #333333;
+          }
+          
+          &:disabled {
+            background-color: #e0e0e0;
+            color: #9e9e9e;
+          }
+        }
+        
+        .stop-button {
+          background-color: #f44336;
+          color: white;
+          width: 32px;
+          height: 32px;
+          
+          &:hover {
+            background-color: #d32f2f;
+          }
+        }
+        
+        .stop-button {
+          background-color: #f44336;
+          
+          &:hover {
+            background-color: #d32f2f;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 移除原有的 input-wrapper 样式，已整合到 unified-input-area 中
+
+/* Scrollbar styling */
+.messages-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-list::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+.messages-list::-webkit-scrollbar-thumb {
+  background: #e9ecef;
+  border-radius: 3px;
+}
+
+.messages-list::-webkit-scrollbar-thumb:hover {
+  background: #dee2e6;
+}
+
+/* 待办事项列表样式 */
+.todo-list-container {
+  background-color: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 4px;
+  margin: 8px 0;
+}
+
+.todo-list {
+  margin: 0;
+  
+  .todo-item {
+    padding: 3px 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    margin-bottom: 0px; // 从1px减少到0px
+    font-size: 12px !important;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .MuiListItemIcon-root {
+      min-width: 24px;
+    }
+    
+    // 覆盖Material-UI ListItemText的默认样式
+    .MuiListItemText-root {
+      .MuiListItemText-primary {
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+        color: #666 !important;
+      }
+    }
+    
+    .todo-content {
+      &.todo-done {
+        text-decoration: line-through;
+        color: #999;
+        opacity: 0.8;
+        font-size: 12px !important;
+      }
+      
+      &.todo-doing {
+        font-weight: 600;
+        color: #666;
+        font-size: 12px !important;
+      }
+      
+      &.todo-todo {
+        color: #666;
+        font-size: 12px !important;
+      }
+    }
+  }
+}
+
+/* Cursor风格的消息布局 */
+.message-container {
+  margin-bottom: -5px; // 从-8px调整到-5px，增加3px间距
+  transition: all 0.2s ease;
+
+  // 进度摘要消息与后续消息留出额外间距
+  &[data-message-type="progress_summary_message"] {
+    margin-bottom: 6px !important;
+  }
+  
+  // Assistant消息更紧凑
+  &.agent-message {
+    margin-bottom: -7px; // 从-10px调整到-7px，增加3px间距
+    
+    &:not(:last-child) {
+      margin-bottom: -9px; // 从-12px调整到-9px，增加3px间距
+    }
+  }
+  
+  &.user-message {
+    display: flex;
+    justify-content: flex-start; // 改为左对齐
+    margin-bottom: -5px; // 从-8px调整到-5px，增加3px间距
+    
+    .message-wrapper {
+      display: flex;
+      align-items: flex-start; // 改为顶部对齐
+      width: 100%; // 占满整行
+      flex-direction: row; // 改为正常方向
+    }
+  }
+  
+  &.agent-message {
+    display: flex;
+    justify-content: flex-start;
+    
+    .message-wrapper {
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+    }
+  }
+  
+  // 响应式设计
+  @media (max-width: 768px) {
+    &.user-message .message-wrapper,
+    &.agent-message .message-wrapper {
+      width: 100%;
+    }
+  }
+}
+
+.message-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; // 允许内容收缩
+  width: 100%; // 占满整行
+}
+
+.message-bubble {
+  position: relative;
+  word-wrap: break-word;
+  word-break: break-word; // 强制换行，包括长单词和链接
+  overflow-wrap: break-word; // 兼容性更好的换行属性
+  max-width: 100%;
+  overflow-x: hidden; // 防止水平溢出
+  transition: box-shadow 0.2s ease;
+  font-size: 13px !important;
+  
+  // 覆盖Material-UI Typography组件的默认样式
+  .MuiTypography-root {
+    font-size: 13px !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  p, div, span {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  // 链接强制换行
+  a {
+    word-break: break-all !important; // 链接使用 break-all，允许在任何字符处换行
+    overflow-wrap: anywhere !important; // 更激进的换行策略
+    display: inline-block !important; // 允许链接换行
+    max-width: 100% !important;
+  }
+  
+  // 表格样式
+  table,
+  .markdown-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 16px 0 !important;
+    border: 1px solid #d1d5db !important; // 表格外边框
+    
+    th, td {
+      border: 1px solid #d1d5db !important; // 单元格边框
+      padding: 8px 12px !important; // 确保 padding 不被覆盖
+      text-align: left !important;
+    }
+    
+    th {
+      background-color: #f9fafb !important;
+      font-weight: 600 !important;
+      color: #1f2937 !important;
+      border-bottom: 2px solid #d1d5db !important; // 表头底部加粗边框
+    }
+    
+    td {
+      color: #374151 !important;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9fafb !important; // 偶数行背景色
+    }
+    
+    // 第一行和最后一行的特殊样式
+    thead tr:first-child th {
+      border-top: 2px solid #d1d5db !important; // 表头顶部加粗边框
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: 2px solid #d1d5db !important; // 最后一行底部加粗边框
+    }
+  }
+  
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* 特殊消息类型的样式 */
+.message-bubble {
+  &.user-message-bubble {
+    background-color: white !important;
+    border: 1px solid #000000 !important; // 改为黑色框线
+    border-radius: 12px !important;
+    padding: 4px 8px !important; // 从8px 12px减少到4px 8px
+    margin: 0px 0 !important; // 从4px 0减少到0px 0
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    width: 100% !important; // 占满整行
+    max-width: 100% !important; // 移除最大宽度限制
+  }
+  
+  &.todo-list-bubble {
+    background-color: white !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 12px !important;
+    padding: 4px !important; // 从8px减少到4px
+    margin: 0px 0 !important; // 从1px 0减少到0px 0
+  }
+  
+  &.tool-message-bubble {
+    background-color: #f0f8ff !important;
+    border: 1px solid #e3f2fd !important;
+    border-radius: 12px !important;
+    padding: 4px 8px !important; // 从8px 12px减少到4px 8px
+    margin: 0px 0 !important; // 从1px 0减少到0px 0
+    word-break: break-word !important; // 强制换行，包括长单词和链接
+    overflow-wrap: break-word !important; // 兼容性更好的换行属性
+    overflow-x: hidden !important; // 防止水平溢出
+    max-width: 100% !important; // 限制最大宽度
+    
+    // 链接强制换行
+    a {
+      word-break: break-all !important; // 链接使用 break-all，允许在任何字符处换行
+      overflow-wrap: anywhere !important; // 更激进的换行策略
+      display: inline-block !important; // 允许链接换行
+      max-width: 100% !important;
+    }
+  }
+  
+  &.system-message-bubble {
+    background-color: #fff3cd !important;
+    border: 1px solid #ffeaa7 !important;
+    border-radius: 12px !important;
+    padding: 4px 8px !important; // 从8px 12px减少到4px 8px
+    margin: 0px 0 !important; // 从1px 0减少到0px 0
+    color: #856404 !important;
+  }
+  
+  &.default-message-bubble {
+    background-color: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
+    border-radius: 12px !important;
+    padding: 2px 6px !important; // 保持较小的padding
+    margin: -1px 0 !important; // 从-4px调整到-1px，增加3px间距
+  }
+}
+
+/* Markdown内容气泡样式 */
+.markdown-content-bubble {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin: 4px 0;
+  
+  // 覆盖Markdown内容的默认样式
+  p, h1, h2, h3, h4, h5, h6, li {
+    margin: 4px 0;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  ul, ol {
+    margin: 8px 0;
+    padding-left: 20px;
+  }
+  
+  code {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+  
+  pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 8px 0;
+    
+    code {
+      background: none;
+      padding: 0;
+    }
+  }
+}
+
+/* 工具消息状态和流程容器样式 */
+.tool-status-and-flow-container {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important; // 从8px减少到4px
+  margin-bottom: 1px !important; // 从2px大幅减少到1px
+}
+
+.tool-status-indicator {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.tool-flow-container {
+  display: flex !important;
+  align-items: center !important;
+  flex: 1 !important;
+}
+
+/* 工具消息样式（无气泡） */
+.tool-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important; // 从12px减少到6px
+  margin-bottom: 1px !important; // 从3px大幅减少到1px
+  flex-wrap: wrap !important;
+}
+
+.tool-operation {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.tool-target {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.tool-arrow {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 20px !important;
+}
+
+
+/* 用户消息内容样式 */
+.user-message-content {
+  background-color: white !important;
+  border: 1px solid #000000 !important; // 改为黑色框线
+  border-radius: 8px !important;
+  padding: 6px 14px !important;
+  margin: 4px 0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  position: relative !important;
+  width: 100% !important; // 占满整行
+  max-width: 100% !important; // 限制最大宽度
+  text-align: left !important; // 确保文字左对齐
+  word-break: break-word !important; // 强制换行，包括长单词和链接
+  overflow-wrap: break-word !important; // 兼容性更好的换行属性
+  overflow-x: hidden !important; // 防止水平溢出
+  
+  /* 用户消息文字样式 */
+  * {
+    color: #333 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    word-break: break-word !important; // 所有子元素都强制换行
+    overflow-wrap: break-word !important;
+  }
+  
+  // 表格元素需要保留 padding，所以排除它们
+  table *,
+  .markdown-table * {
+    padding: initial !important;
+  }
+  
+  p, div, span {
+    color: #333 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  /* 链接强制换行 */
+  a {
+    word-break: break-all !important; // 链接使用 break-all，允许在任何字符处换行
+    overflow-wrap: anywhere !important; // 更激进的换行策略
+    display: inline-block !important; // 允许链接换行
+    max-width: 100% !important;
+  }
+  
+  /* 表格样式 */
+  table,
+  .markdown-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 16px 0 !important;
+    border: 1px solid #d1d5db !important; // 表格外边框
+    
+    th, td {
+      border: 1px solid #d1d5db !important; // 单元格边框
+      padding: 8px 12px !important; // 确保 padding 不被覆盖
+      text-align: left !important;
+    }
+    
+    th {
+      background-color: #f9fafb !important;
+      font-weight: 600 !important;
+      color: #1f2937 !important;
+      border-bottom: 2px solid #d1d5db !important; // 表头底部加粗边框
+    }
+    
+    td {
+      color: #374151 !important;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9fafb !important; // 偶数行背景色
+    }
+    
+    // 第一行和最后一行的特殊样式
+    thead tr:first-child th {
+      border-top: 2px solid #d1d5db !important; // 表头顶部加粗边框
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: 2px solid #d1d5db !important; // 最后一行底部加粗边框
+    }
+  }
+  
+  /* 移除Markdown内容的内边距 */
+  p:first-child,
+  p:last-child {
+    margin: 0 !important;
+  }
+}
+
+// 选中卡片引用样式 - 更新为适应新的布局结构
+.selected-cards-container {
+  // 移除绝对定位，现在作为 reference-section 的内容
+  padding: 0; // 移除padding，由父容器控制
+  background-color: transparent;
+  border: none;
+  
+  .selected-cards-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .at-trigger-button {
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1976d2;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    
+    &:hover {
+      background-color: #e3f2fd;
+      border-color: #1976d2;
+      transform: scale(1.05);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  .selected-cards-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+    align-items: center; // 垂直居中对齐卡片引用
+    
+    .card-ref-chip {
+      font-size: 11px;
+      height: 22px;
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 6px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #495057;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+      }
+      
+      .MuiChip-label {
+        padding: 0 8px;
+        font-family: 'Roboto Mono', monospace;
+        font-weight: 500;
+        color: #1976d2;
+      }
+      
+      .MuiChip-deleteIcon {
+        font-size: 16px;
+        color: #1976d2;
+        
+        &:hover {
+          color: #1565c0;
+        }
+      }
+      
+      .close-button {
+        background: none;
+        border: none;
+        color: #6c757d;
+        cursor: pointer;
+        padding: 0;
+        width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        font-size: 10px;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          background-color: #dc3545;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+// 卡片引用折叠样式（更小的尺寸）
+.card-ref-collapsed {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 120px; // 从80px增大到120px
+  height: 26px; // 从18px增大到26px
+  margin: 2px 3px; // 稍微增加间距
+  overflow: visible; // 允许删除按钮溢出
+  
+  .card-ref-collapsed-content {
+    display: flex;
+    align-items: center;
+    width: 100%; // 占满父容器
+    height: 100%;
+    position: relative;
+    // 不在这一层裁剪，否则会把圆形图标的阴影截断
+    // 文本内容的裁剪交给内部的 .card-ref-collapsed-title 和其子元素处理
+    overflow: visible;
+  }
+  
+  .card-ref-collapsed-icon {
+    width: 26px; // 从18px增大到26px
+    height: 26px; // 从18px增大到26px
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    flex-shrink: 0;
+    // 让迷你图标有贴身的轻微右下投影（去掉远处的大阴影）
+    box-shadow: 1px 2px 4px rgba(15, 23, 42, 0.28);
+    transition: box-shadow 220ms ease;
+    
+    img {
+      width: 14px; // 从10px增大到14px
+      height: 14px; // 从10px增大到14px
+      object-fit: contain;
+    }
+  }
+  
+  .card-ref-collapsed-title {
+    width: 100px; // 从65px增大到100px
+    height: 20px; // 从14px增大到20px
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 10px; // 相应调整圆角
+    display: flex;
+    align-items: center;
+    padding: 0 8px 0 12px; // 相应增加padding
+    margin-left: -8px; // 调整重叠距离
+    font-size: 10px; // 从7px增大到10px
+    font-weight: 500;
+    color: #1f2937;
+    z-index: 1;
+    box-sizing: border-box;
+    overflow: hidden; // 隐藏溢出内容
+    flex-shrink: 0; // 防止收缩
+    
+    .card-ref-collapsed-title-text {
+      white-space: nowrap; // 不换行
+      overflow: hidden; // 隐藏溢出内容
+      text-overflow: ellipsis; // 显示省略号
+      width: 100%; // 占满父容器宽度
+      display: block;
+      min-width: 0; // 关键：允许文本收缩
+    }
+  }
+  
+  // 在 user message 中的特殊样式
+  &.in-user-message {
+    .card-ref-collapsed-title {
+      margin-left: -8px !important;
+      padding-left: 12px !important; // 相应调整padding
+    }
+  }
+  
+  // 删除按钮样式（更小版本）
+  .card-ref-delete-btn {
+    position: absolute;
+    top: -4px; // 调整位置
+    right: -4px; // 调整位置
+    width: 16px; // 从12px增大到16px
+    height: 16px; // 从12px增大到16px
+    border-radius: 50%;
+    background: #ff4444;
+    color: white;
+    border: none;
+    font-size: 11px; // 从8px增大到11px
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #cc0000;
+      transform: scale(1.1);
+    }
+    
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+}
+
+// user_requirement 卡片内容样式
+.user-requirement-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  
+  .user-requirement-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    
+    .user-requirement-icon {
+      flex-shrink: 0;
+      
+      .content-icon {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+      }
+    }
+    
+    .user-requirement-text {
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #1f2937;
+      word-break: break-word;
+    }
+  }
+}
+
+// 在 user_requirement 卡片中的迷你卡片样式（更大版本）
+.user-requirement-references {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+  
+  .card-ref-collapsed {
+    width: 120px; // 从100px增大到120px
+    height: 26px; // 从22px增大到26px
+    margin: 2px 3px; // 稍微增加间距
+    
+    .card-ref-collapsed-icon {
+      width: 26px; // 从22px增大到26px
+      height: 26px; // 从22px增大到26px
+      
+      img {
+        width: 14px; // 从12px增大到14px
+        height: 14px; // 从12px增大到14px
+      }
+    }
+    
+    .card-ref-collapsed-title {
+      width: 100px; // 从80px增大到100px
+      height: 20px; // 从18px增大到20px
+      border-radius: 10px; // 相应调整圆角
+      padding: 0 8px 0 12px; // 相应增加padding
+      margin-left: -8px; // 调整重叠距离
+      font-size: 10px; // 从8px增大到10px
+    }
+    
+    .card-ref-delete-btn {
+      top: -4px; // 调整位置
+      right: -4px; // 调整位置
+      width: 16px; // 从14px增大到16px
+      height: 16px; // 从14px增大到16px
+      font-size: 11px; // 从9px增大到11px
+    }
+  }
+}
+
+/* 工具消息容器和状态样式 */
+.tool-message-container {
+  margin-top: 2px;  
+  margin-bottom: 8px; // 扩大tool message之间的间距
+  padding: 2px 0px; // 减少上下padding，从8px减少到2px
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible; // 改为visible，避免裁剪内容
+  max-width: 100%; // 限制最大宽度
+  word-break: break-word; // 强制换行，包括长单词和链接
+  overflow-wrap: break-word; // 兼容性更好的换行属性
+
+  .tool-message-click-surface {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%;
+    width: fit-content;
+  }
+
+  /* 状态指示器 */
+  .tool-status-indicator {
+    margin-bottom: 2px; // 从6px大幅减少到2px
+    display: flex;
+    align-items: center;
+  }
+
+  /* 状态指示器和工具操作流程容器 - 横向布局 */
+  .tool-status-and-flow-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px; // 从8px减少到4px
+    margin-bottom: 0px;
+  }
+
+  /* 当有detail内容时，添加底部padding */
+  &:has(.tool-detail-content) {
+    padding-bottom: 1px; // 进一步减少有详细内容时的底部padding，从2px减少到1px
+  }
+
+  /* tool-detail-content 样式 - 强制链接换行 */
+  .tool-detail-content {
+    word-break: break-word !important; // 强制换行，包括长单词和链接
+    overflow-wrap: break-word !important; // 兼容性更好的换行属性
+    overflow-x: hidden !important; // 防止水平溢出
+    max-width: 100% !important; // 限制最大宽度
+    
+    // 链接强制换行
+    a {
+      word-break: break-all !important; // 链接使用 break-all，允许在任何字符处换行
+      overflow-wrap: anywhere !important; // 更激进的换行策略
+      display: inline-block !important; // 允许链接换行
+      max-width: 100% !important;
+    }
+    
+    // 覆盖Material-UI Typography组件的默认样式
+    &.MuiTypography-root {
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+  }
+
+  /* 状态指示器 */
+  .tool-status-indicator {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; // 改为左对齐
+    background: transparent;
+    margin-left: -12px; // 向左移动8px
+  }
+
+  /* 横向箭头容器 - 现在在工具流程容器内部 */
+  .tool-horizontal-arrow-container {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+  }
+
+  /* 工具流程容器 - 横向布局 */
+  .tool-flow-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+}
+
+/* 状态徽章基础样式 - 无边框版本 */
+.tool-status-badge {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  &:hover {
+    transform: none;
+  }
+
+  /* 脉冲动画 */
+  &.tool-pulse-animation {
+    animation: tool-pulse 2s ease-in-out infinite;
+  }
+
+  /* 发光动画 */
+  &.tool-glow-animation {
+    animation: tool-glow 2s ease-in-out infinite;
+  }
+
+  /* 加载旋转器 */
+  .tool-loading-spinner {
+    animation: tool-spin 1s linear infinite;
+    display: inline-block;
+  }
+
+  /* 齿轮容器 */
+  .tool-gear-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    animation: tool-gear-rotate 2s linear infinite;
+    transform-origin: center;
+  }
+
+  /* 齿轮图标旋转动画 */
+  .tool-gear-spin {
+    animation: tool-gear-rotate 2s linear infinite;
+    transform-origin: 12px 12px; /* SVG viewBox是24x24，所以中心是12px */
+    display: inline-block;
+  }
+}
+
+/* 不同状态的主题样式 - 简化版本，无边框 */
+.tool-status-pending {
+  .tool-message-container {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tool-status-in_progress {
+  .tool-message-container {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* 执行中的特殊效果 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: tool-shimmer 2s infinite;
+  }
+}
+
+.tool-status-completed {
+  .tool-message-container {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.tool-status-interrupted {
+  .tool-message-container {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 箭头动画 */
+.tool-arrow {
+  transition: all 0.3s ease;
+
+  &.tool-arrow-animated {
+    animation: tool-arrow-bounce 1s ease-in-out infinite;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+/* 横向箭头特殊样式 */
+.tool-horizontal-arrow-container .tool-arrow {
+  &.tool-arrow-animated {
+    animation: tool-arrow-horizontal-bounce 2s ease-in-out infinite;
+  }
+}
+
+/* 纵向箭头特殊样式 - 已移除，不再需要 */
+
+/* 动画定义 */
+@keyframes tool-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes tool-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.8), 0 0 30px rgba(33, 150, 243, 0.6);
+  }
+}
+
+@keyframes tool-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes tool-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes tool-arrow-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes tool-arrow-horizontal-bounce {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes tool-gear-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .tool-message-container {
+    padding: 8px;
+    margin: 6px 0;
+  }
+
+  .tool-status-badge {
+    padding: 4px 8px !important;
+    font-size: 10px !important;
+  }
+}
+
+/* 深色主题支持 - 简化版本 */
+@media (prefers-color-scheme: dark) {
+  .tool-status-pending .tool-message-container,
+  .tool-status-in_progress .tool-message-container,
+  .tool-status-completed .tool-message-container,
+  .tool-status-interrupted .tool-message-container {
+    background: #2d2d2d;
+    border-color: #444;
+  }
+}
+
+/* 新的状态符号样式 */
+.status-sandglass-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  
+  .status-sandglass-icon {
+    animation: sandglass-rotate 2s linear infinite;
+    transform-origin: center;
+  }
+}
+
+.status-breathing-light {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: transparent !important; // 强制透明背景
+  
+  .breathing-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: breathing-pulse 2s ease-in-out infinite;
+    position: relative;
+    z-index: 2; // 确保圆点在扩散环之上
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: currentColor;
+      opacity: 0.3;
+      transform: translate(-50%, -50%) scale(1);
+      animation: breathing-ring 2s ease-in-out infinite;
+      z-index: 1; // 扩散环在圆点之下
+    }
+  }
+}
+
+.status-check-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  
+  svg {
+    animation: check-bounce 0.6s ease-out;
+  }
+}
+
+.status-cross-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  
+  svg {
+    animation: cross-shake 0.5s ease-in-out;
+    transform: scale(1.4); // 稍微放大叉号
+    filter: drop-shadow(0.5px 0.5px 0px currentColor) drop-shadow(-0.5px -0.5px 0px currentColor); // 减少阴影效果
+  }
+}
+
+/* 新的动画定义 */
+@keyframes sandglass-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes breathing-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+@keyframes breathing-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0.1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes check-bounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes cross-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+/* 新增消息动画效果 */
+  
+  /* 简单淡入动画 - 用于非 assistant_message */
+  .fade-in-animation {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+/* Tool Message 状态动画效果 */
+
+/* 呼吸动画 - 用于 pending 和 in_progress 状态 */
+.tool-breathing-animation {
+  animation: toolBreathing 2s ease-in-out infinite;
+}
+
+@keyframes toolBreathing {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Tool 状态图标样式 */
+.tool-status-icon {
+  flex-shrink: 0;
+}
+
+/* Tool flow container 布局调整 */
+.tool-flow-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+/* 隐藏滚动条但保留滚动功能（覆盖前面样式） */
+.unified-input-area .reference-section {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.unified-input-area .reference-section::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+.message-input-field .MuiInputBase-inputMultiline {
+  overflow: auto !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.message-input-field .MuiInputBase-inputMultiline::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background: transparent;
+}

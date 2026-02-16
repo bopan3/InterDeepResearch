@@ -1,0 +1,229 @@
+.action-input-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 20px;
+  animation: slideUp 0.3s ease-out;
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .action-input-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .action-input-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .action-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 0;
+    }
+
+    .close-button {
+      color: #666;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: #e74c3c;
+        background-color: rgba(231, 76, 60, 0.1);
+      }
+    }
+  }
+
+  .selected-cards {
+    margin-bottom: 16px;
+    
+    .selected-cards-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      
+      .selected-cards-label {
+        font-weight: 500;
+        color: #666;
+      }
+      
+      .selection-mode-button {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        min-width: auto;
+        height: 32px; // 固定高度
+        box-sizing: border-box; // 确保边框不影响总高度
+        
+        &.MuiButton-contained {
+          background-color: #1976d2;
+          color: white;
+          border: 1px solid #1976d2; // 添加边框保持一致性
+          
+          &:hover {
+            background-color: #1565c0;
+            border-color: #1565c0;
+          }
+        }
+        
+        &.MuiButton-outlined {
+          border-color: #1976d2;
+          color: #1976d2;
+          border-width: 1px; // 确保边框宽度一致
+          
+          &:hover {
+            background-color: rgba(25, 118, 210, 0.04);
+          }
+        }
+      }
+    }
+    
+    .cards-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+
+      .MuiChip-root {
+        border-radius: 16px;
+        font-size: 12px;
+        height: 28px;
+
+        &.MuiChip-outlined {
+          border-color: #0891b2;
+          color: #0891b2;
+
+          .MuiChip-deleteIcon {
+            color: #0891b2;
+
+            &:hover {
+              color: #0e7490;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .input-section {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+
+    .action-input-field {
+      flex: 1;
+
+      .MuiOutlinedInput-root {
+        border-radius: 16px;
+        background-color: #f8f9fa;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: #f1f3f4;
+        }
+
+        &.Mui-focused {
+          background-color: white;
+          box-shadow: 0 0 0 2px rgba(8, 145, 178, 0.2);
+        }
+
+        .MuiOutlinedInput-notchedOutline {
+          border-color: #e0e0e0;
+        }
+
+        &:hover .MuiOutlinedInput-notchedOutline {
+          border-color: #0891b2;
+        }
+
+        &.Mui-focused .MuiOutlinedInput-notchedOutline {
+          border-color: #0891b2;
+          border-width: 2px;
+        }
+
+        .MuiInputBase-input {
+          padding: 12px 16px;
+          font-size: 14px;
+          line-height: 1.5;
+
+          &::placeholder {
+            color: #999;
+            opacity: 1;
+          }
+        }
+      }
+    }
+
+    .send-button {
+      border-radius: 12px;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+      box-shadow: 0 2px 8px rgba(8, 145, 178, 0.3);
+      text-transform: none;
+      font-weight: 600;
+      min-width: 100px;
+      height: 48px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: linear-gradient(135deg, #0e7490 0%, #155e75 100%);
+        box-shadow: 0 4px 12px rgba(8, 145, 178, 0.4);
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(8, 145, 178, 0.3);
+      }
+
+      &:disabled {
+        background: #e0e0e0;
+        color: #999;
+        box-shadow: none;
+        transform: none;
+      }
+
+      .MuiButton-endIcon {
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .action-input-box {
+    padding: 16px;
+
+    .action-input-container {
+      gap: 12px;
+    }
+
+    .input-section {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+
+      .send-button {
+        width: 100%;
+      }
+    }
+  }
+}

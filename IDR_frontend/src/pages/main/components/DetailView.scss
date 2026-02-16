@@ -1,0 +1,1615 @@
+// trace support highlight 样式
+.trace-support-highlight {
+  background-color: #FFE5B4 !important;
+  color: #000000 !important;
+  padding: 2px 4px !important;
+  border-radius: 2px !important;
+  display: inline !important;
+  
+  // 确保内部段落正确显示（如果 highlight 内容包含段落）
+  p {
+    margin: 0 !important;
+    display: inline !important;
+    background-color: inherit !important;
+    color: inherit !important;
+    padding: 0 !important;
+  }
+  
+  // 确保其他块级元素也能正确显示
+  div, h1, h2, h3, h4, h5, h6, ul, ol, li {
+    display: inline !important;
+    background-color: inherit !important;
+    color: inherit !important;
+  }
+}
+
+// excerpt 引用块样式 - 参考CardNode中的样式但使用灰色边框
+.excerpt-block {
+  margin: 8px 0;
+  padding: 12px 16px;
+  border-left: 4px solid #6b7280; // 使用灰色边框，与其他装饰线条保持一致
+  background-color: #f8fafc;
+  border-radius: 0 4px 4px 0;
+  font-style: italic;
+  color: #475569;
+  
+  // 嵌套的 markdown 内容样式
+  p {
+    margin: 0 0 8px 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  // 嵌套的引用块样式
+  .excerpt-block {
+    margin: 4px 0;
+    padding: 8px 12px;
+    border-left-color: #64748b;
+    background-color: #f1f5f9;
+  }
+  
+  // 嵌套的引用标记样式 - 统一为灰色圆形
+  .citation-block {
+    display: inline-block;
+    position: relative;
+    top: 0; // 正常位置，不再是上标
+    background-color: #666; // 灰色背景
+    color: white; // 白色字体
+    padding: 0; // 去掉padding，用固定宽高
+    border-radius: 50%; // 圆形
+    font-size: 11px; // 稍微增大字体
+    font-weight: 600;
+    margin: 0 2px; // 左右间距
+    cursor: help;
+    border: none; // 去掉边框
+    transition: all 0.2s ease;
+    opacity: 1; // 完全不透明
+    line-height: 14px; // 与高度一致，垂直居中
+    width: 14px; // 稍微缩小的固定宽度
+    height: 14px; // 固定高度
+    text-align: center; // 水平居中
+    
+    &:hover {
+      background-color: #555; // 悬停时稍微深一点的灰色
+      transform: scale(1.1); // 轻微放大效果
+    }
+  }
+}
+
+.detail-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative; // 让内部绝对定位元素以整个 DetailView 为参照
+  background: #ffffff;
+  border-radius: 0;
+  overflow: hidden;
+  flex: 1; // 确保在父容器中占据剩余空间
+  
+  &.detail-view-fullscreen {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+  }
+  
+  // 引用块样式 - 圆形标签样式（作用域限制在 .detail-view 内，避免影响 CardNode）
+  .citation-block {
+    display: inline-block;
+    position: relative;
+    top: 0; // 正常位置，不再是上标
+    background-color: #666; // 灰色背景
+    color: white; // 白色字体
+    padding: 0; // 去掉padding，用固定宽高
+    border-radius: 50%; // 圆形
+    font-size: 11px; // 稍微增大字体
+    font-weight: 600;
+    margin: 0 2px; // 左右间距
+    cursor: help;
+    border: none; // 去掉边框
+    // 移除 transition: all，避免影响位置计算
+    opacity: 1; // 完全不透明
+    line-height: 14px; // 与高度一致，垂直居中
+    width: 14px; // 稍微缩小的固定宽度
+    height: 14px; // 稍微缩小的固定高度，确保圆形
+    text-align: center; // 文字居中
+    text-decoration: none; // 去掉下划线
+    vertical-align: middle; // 添加垂直对齐，避免 hover 时位置跳动
+    
+    &:hover {
+      background-color: #555; // 深灰色背景
+      opacity: 1; // hover 时完全不透明
+      // 移除 transform，避免位置跳动
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); // 灰色阴影
+    }
+    
+    &:active {
+      // 移除 transform，避免位置跳动
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); // 灰色阴影
+    }
+  }
+  
+  .citation-error {
+    color: #dc2626;
+    background-color: #fef2f2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    border: 1px solid #fecaca;
+  }
+}
+
+// 引用显示区样式
+.citation-display-area {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: slideInUp 0.3s ease-out;
+
+  .citation-display-title {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 4px;
+    display: inline-block;
+  }
+
+  .citation-display-content {
+    .citation-meta {
+      margin-bottom: 8px;
+      color: #6c757d;
+      
+      strong {
+        color: #495057;
+      }
+    }
+
+    .citation-error-text {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 4px;
+      padding: 8px;
+      margin-top: 8px;
+    }
+
+    .citation-content-preview {
+      margin-top: 12px;
+      
+      .citation-content-text {
+        margin: 8px 0;
+        color: #495057;
+        font-weight: 500;
+      }
+
+      .citation-content-body {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 12px;
+        margin-top: 8px;
+        max-height: 200px;
+        overflow-y: auto;
+
+        .citation-markdown-preview {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          line-height: 1.5;
+          color: #495057;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+
+        .citation-json-preview {
+          font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+          font-size: 12px;
+          line-height: 1.4;
+          color: #495057;
+          background: #f8f9fa;
+          border-radius: 4px;
+          padding: 8px;
+          margin: 0;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+      }
+    }
+  }
+}
+
+// Visualization 详情视图样式
+.visualization-detail-content {
+  // 基本容器样式
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  position: relative;
+  
+  // 使用 iframe 进行完全样式隔离
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #ffffff;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  flex-shrink: 0;
+  
+  .detail-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+  
+  .detail-title {
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+  }
+  
+  .card-type-chip {
+    &.card-type-report {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    
+    &.card-type-webpage {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    
+    &.card-type-search {
+      background-color: #fef3c7;
+      color: #92400e;
+    }
+    
+    &.card-type-default {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+  }
+  
+  .agent-chip {
+    border-color: #9ca3af;
+    color: #6b7280;
+  }
+  
+  .detail-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.detail-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  position: relative; // 便于在内部绝对定位按钮
+  padding-bottom: 72px; // 为右下角按钮预留空间
+
+  background: #ffffff;
+  
+  // 文本选中样式 - 灰色背景（支持所有浏览器）
+  &::selection {
+    background-color: #d1d5db; // 灰色背景
+    color: #000000; // 黑色文字
+  }
+  
+  &::-moz-selection {
+    background-color: #d1d5db; // 灰色背景（Firefox）
+    color: #000000; // 黑色文字
+  }
+  
+  *::selection {
+    background-color: #d1d5db; // 灰色背景
+    color: #000000; // 黑色文字
+  }
+  
+  *::-moz-selection {
+    background-color: #d1d5db; // 灰色背景（Firefox）
+    color: #000000; // 黑色文字
+  }
+
+  // 卡片类型标签（左对齐圆角矩形）
+  .detail-card-type-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    border: none;
+    letter-spacing: 0.03em;
+
+    // 默认样式（对应 CardNode 中的默认黑色）
+    background-color: #000000;
+    color: #ffffff;
+
+    // 与 CardNode.tsx getCircleBackgroundColor 完全一致的颜色映射
+    &.type-webpage {
+      background-color: #50B230; // webpage
+      color: #ffffff;
+    }
+
+    &.type-web_search,
+    &.type-web_search_result {
+      background-color: #387BFF; // web_search / web_search_result
+      color: #ffffff;
+    }
+
+    &.type-trace_result {
+      background-color: #FF9900;
+      color: #1f1300;
+    }
+
+    &.type-note,
+    &.type-report {
+      background-color: #E73232; // note / report
+      color: #ffffff;
+    }
+
+    // 其余类型（包括 user_requirement、visualization 等）走默认黑色
+    &.type-default {
+      background-color: #000000;
+      color: #ffffff;
+    }
+  }
+  
+  .markdown-with-citations {
+    line-height: 1.6;
+    color: #374151;
+    
+    // 确保引用块与文本正确对齐
+    p {
+      margin: 0.5em 0;
+      display: inline;
+    }
+    
+    // 处理换行
+    br {
+      display: block;
+      margin: 0.5em 0;
+      content: "";
+    }
+    
+    // Markdown 样式
+    h1, h2, h3, h4, h5, h6 {
+      margin: 24px 0 16px 0;
+      font-weight: 600;
+      color: #1f2937;
+      
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+    
+    h1 { 
+      font-size: 28px; 
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+    h2 { 
+      font-size: 24px; 
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 6px;
+    }
+    h3 { font-size: 20px; }
+    h4 { font-size: 18px; }
+    h5 { font-size: 16px; }
+    h6 { font-size: 14px; }
+    
+    p {
+      margin: 16px 0;
+      line-height: 1.7;
+    }
+    
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+      
+      li {
+        margin: 8px 0;
+        line-height: 1.6;
+      }
+    }
+    
+    blockquote {
+      margin: 16px 0;
+      padding: 12px 16px;
+      border-left: 4px solid #6b7280;
+      background-color: #f8fafc;
+      color: #64748b;
+      font-style: italic;
+    }
+    
+    // 确保 excerpt-block 样式优先级更高
+    blockquote.excerpt-block {
+      margin: 8px 0;
+      padding: 12px 16px;
+      border-left: 4px solid #6b7280 !important; // 使用 !important 确保优先级
+      background-color: #f8fafc;
+      border-radius: 0 4px 4px 0;
+      font-style: italic;
+      color: #475569;
+    }
+    
+    code {
+      background-color: #f1f5f9;
+      color: #e11d48;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 0.9em;
+    }
+    
+    pre {
+      background-color: #1e293b;
+      color: #e2e8f0;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 16px 0;
+      
+      code {
+        background: none;
+        color: inherit;
+        padding: 0;
+      }
+    }
+    
+    table,
+    .markdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      border: 1px solid #d1d5db; // 表格外边框
+      
+      th, td {
+        border: 1px solid #d1d5db; // 单元格边框
+        padding: 8px 12px;
+        text-align: left;
+      }
+      
+      th {
+        background-color: #f9fafb;
+        font-weight: 600;
+        color: #1f2937;
+        border-bottom: 2px solid #d1d5db; // 表头底部加粗边框
+      }
+      
+      td {
+        color: #374151;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #f9fafb; // 偶数行背景色
+      }
+      
+      // 第一行和最后一行的特殊样式
+      thead tr:first-child th {
+        border-top: 2px solid #d1d5db; // 表头顶部加粗边框
+      }
+      
+      tbody tr:last-child td {
+        border-bottom: 2px solid #d1d5db; // 最后一行底部加粗边框
+      }
+    }
+    
+    strong {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    em {
+      font-style: italic;
+      color: #6b7280;
+    }
+    
+    a {
+      color: #3b82f6;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  // 统一 Markdown 标题字号（作用于所有卡片类型）
+  .markdown-body {
+    font-size: 13px;
+    line-height: 1.5;
+    h1 { font-size: 20px; }
+    h2 { font-size: 18px; }
+    h3 { font-size: 16px; }
+    h4 { font-size: 15px; }
+    h5 { font-size: 14px; }
+    h6 { font-size: 13px; }
+    
+    // 表格样式 - 添加边框
+    table,
+    .markdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      border: 1px solid #d1d5db; // 表格外边框
+      
+      th, td {
+        border: 1px solid #d1d5db; // 单元格边框
+        padding: 8px 12px;
+        text-align: left;
+      }
+      
+      th {
+        background-color: #f9fafb;
+        font-weight: 600;
+        color: #1f2937;
+        border-bottom: 2px solid #d1d5db; // 表头底部加粗边框
+      }
+      
+      td {
+        color: #374151;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #f9fafb; // 偶数行背景色
+      }
+      
+      // 第一行和最后一行的特殊样式
+      thead tr:first-child th {
+        border-top: 2px solid #d1d5db; // 表头顶部加粗边框
+      }
+      
+      tbody tr:last-child td {
+        border-bottom: 2px solid #d1d5db; // 最后一行底部加粗边框
+      }
+    }
+  }
+  
+  .json-content {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  // note / report 在 DetailView 中的 Summary 区域布局（与 CardNode 保持一致）
+  .report-content {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .report-summary-section {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+
+      .quote-icon {
+        width: 20px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        margin-right: 4px;
+      }
+
+      .report-summary {
+        font-size: 18px;
+        color: #000000;
+        line-height: 1.5;
+        font-style: normal;
+        flex: 1;
+      }
+    }
+  }
+
+  .trace-result-content {
+    padding: 12px;
+    border: 1px solid #fcd9b0;
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    background: #fff8f0;
+    margin-bottom: 16px;
+
+    .trace-result-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 153, 0, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .content-icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .trace-result-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .trace-result-title {
+      font-weight: 600;
+      color: #b45309;
+      font-size: 15px;
+    }
+
+    .trace-result-text {
+      color: #78350f;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+// 注意：.citation-block 样式已移到 .detail-view 作用域内，避免全局影响 CardNode
+
+// 右上角操作按钮容器
+.detail-actions-top-right {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+
+// 右上角黑色方形操作按钮
+.detail-action-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  padding: 2px;
+
+  &:hover {
+    background-color: #111827 !important;
+  }
+
+  svg {
+    font-size: 18px;
+  }
+}
+
+// 右下角 Refer in Chat 按钮
+.refer-in-chat-button {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 3; // 确保在内容区域之上
+  padding: 4px 8px;
+  border-radius: 999px; // 较大的圆角
+  border: none;
+  background: #111827;
+  color: #f9fafb;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    background: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.trace-process {
+  position: absolute;
+  left: 16px;
+  top: 16px;   /* 与拖拽逻辑保持一致：使用 top 而不是 bottom */
+  width: 180px; /* 大幅减小外框宽度 */
+  padding: 12px 12px 6px; /* 再轻微降低整体高度 */
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #adadad;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: visible;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: -4px; /* 再次缩短阴影外框高度 */
+    border-radius: 18px;
+    border: 1px solid #adadad;
+    background: #ffffff;
+    z-index: -1;
+  }
+}
+
+.trace-process-close {
+  position: absolute;
+  top: -4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #4b5563;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    color: #111827;
+    background: rgba(15, 23, 42, 0.08);
+  }
+
+  &:active {
+    background: rgba(15, 23, 42, 0.14);
+  }
+}
+
+.trace-process-icon {
+  position: absolute;
+  top: -5px; /* 再微调位置，配合更小尺寸 */
+  left: -12px;
+  width: 34px;  /* 圆形 icon 再缩小一圈 */
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    6px 10px 22px rgba(15, 23, 42, 0.18),
+    2px 4px 8px rgba(15, 23, 42, 0.28);
+}
+
+.trace-process-icon-image {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.trace-process-body {
+  width: calc(100% + 24px); /* 配合左右 padding=12 重新对齐 */
+  margin: -18px -12px 0; /* 轻微减小与外框的垂直占用 */
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #adadad;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.trace-process-title {
+  font-size: 15px; /* 和 Finding support 保持一致字号 */
+  font-weight: 600;
+  color: #111827;
+  padding-left: 28px; /* 略微收紧 icon 预留空间 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trace-process-footer {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 文本与图标整体左对齐 */
+  gap: 8px; /* 缩小间距，让文字更靠近图标/加载点 */
+}
+
+.trace-process-result-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+.trace-process-dots {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+
+  span {
+    width: 5px;  /* 稍微缩小 ... 小圆点 */
+    height: 5px;
+    border-radius: 50%;
+    background: #111827;
+    animation: traceDotWave 1.2s ease-in-out infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+.trace-process-text {
+  font-size: 15px; /* Finding support 再调大 1px */
+  font-weight: 600;
+  color: #adadad; /* 按需求改为 #ADADAD */
+  white-space: nowrap;
+  transform: translateX(-4px); /* 向左微移，视觉更靠近加载点 */
+}
+
+@keyframes traceDotWave {
+  0% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+}
+
+.trace-selection-button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid #adadad;
+  background: #ffffff;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: default;
+  z-index: 4;
+  pointer-events: auto; // 允许 hover 动画
+  transition: transform 0.18s ease;
+
+  img {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-1px);
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .detail-view {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  
+  .detail-header {
+    padding: 12px 16px;
+    
+    .detail-header-left {
+      gap: 8px;
+    }
+    
+    .detail-title {
+      font-size: 18px;
+    }
+  }
+  
+  .detail-content {
+    padding: 16px;
+    
+    .markdown-with-citations {
+      h1 { font-size: 24px; }
+      h2 { font-size: 20px; }
+      h3 { font-size: 18px; }
+    }
+  }
+  
+  .detail-footer {
+    padding: 8px 16px;
+  }
+}
+
+// 滚动条样式
+// .detail-content::-webkit-scrollbar {
+//   width: 6px;
+// }
+
+// .detail-content::-webkit-scrollbar-track {
+//   background: #f1f5f9;
+// }
+
+// .detail-content::-webkit-scrollbar-thumb {
+//   background: #cbd5e1;
+//   border-radius: 3px;
+  
+//   &:hover {
+//     background: #94a3b8;
+//   }
+// }
+
+// 搜索结果详细视图样式
+.search-result-detail-view {
+  font-size: 16px;
+
+  .search-results-title {
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  .search-result-detail-item {
+    margin-bottom: 16px;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-color: #d1d5db;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .result-detail-title {
+      color: #1a73e8;
+      font-weight: 600;
+      font-size: 22px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+      cursor: default;
+    }
+    
+    .result-detail-url {
+      color: #059669;
+      font-size: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      word-break: break-all;
+      line-height: 1.5;
+      
+      &:hover {
+        color: #047857;
+        text-decoration: underline;
+      }
+    }
+    
+    .result-detail-snippet {
+      color: #374151;
+      font-size: 18px;
+      line-height: 1.75;
+      margin: 0;
+    }
+  }
+}
+
+// 网页详细视图样式
+.webpage-detail-view {
+  .webpage-url-section {
+    display: flex;
+    flex-direction: row; // 明确设置为左右排列
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    
+    .webpage-favicon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    
+    .webpage-url {
+      color: #059669;
+      font-size: 14px;
+      text-decoration: none;
+      word-break: break-all;
+      
+      &:hover {
+        color: #047857;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .webpage-summary-section {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-top: 3px solid #2d3748;
+    box-shadow: 0 2px 4px rgba(45, 55, 72, 0.1);
+
+    .quote-icon {
+      width: 20px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      margin-right: 0px;
+      color: #6c757d;
+    }
+
+    .webpage-summary {
+      font-size: 18px;
+      color: #000000;
+      line-height: 1.5;
+      font-style: normal;
+      margin: 0;
+      font-weight: 400;
+      flex: 1;
+    }
+  }
+}
+
+// webpage-content 样式（用于 displayCardContent 函数中的 webpage 类型）
+.webpage-content {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  
+  // URL 部分样式 - 左右排列
+  .webpage-url-section {
+    display: flex;
+    flex-direction: row; // 明确设置为左右排列
+    align-items: center;
+    gap: 8px;
+    
+    .webpage-favicon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    
+    .webpage-url {
+      font-size: 12px;
+      color: #9ca3af;
+      font-family: monospace;
+      word-break: break-all;
+      line-height: 1.3;
+      text-decoration: none;
+      
+      &:hover {
+        color: #6b7280;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  // Summary 部分样式 - 左右排列
+  .webpage-summary-section {
+    display: flex;
+    flex-direction: row; // 明确设置为左右排列
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: -15px; // 减少与下方 markdown 部分的间距
+    
+    .quote-icon {
+      width: 20px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      margin-right: 0px;
+    }
+    
+    .webpage-summary {
+      font-size: 18px;
+      color: #000000;
+      line-height: 1.5;
+      font-style: normal;
+      flex: 1;
+    }
+  }
+  
+  // Markdown 内容部分样式
+  .webpage-markdown-section {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #374151;
+    
+    // 表格样式 - 添加边框
+    .markdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 12px;
+      border: 1px solid #d1d5db; // 表格外边框
+      
+      th, td {
+        border: 1px solid #d1d5db; // 单元格边框
+        padding: 6px 8px;
+        text-align: left;
+      }
+      
+      th {
+        background-color: #f9fafb;
+        font-weight: 600;
+        color: #1f2937;
+        border-bottom: 2px solid #d1d5db; // 表头底部加粗边框
+      }
+      
+      td {
+        color: #374151;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #f9fafb; // 偶数行背景色
+      }
+      
+      // 第一行和最后一行的特殊样式
+      thead tr:first-child th {
+        border-top: 2px solid #d1d5db; // 表头顶部加粗边框
+      }
+      
+      tbody tr:last-child td {
+        border-bottom: 2px solid #d1d5db; // 最后一行底部加粗边框
+      }
+    }
+    
+    .markdown-body {
+      font-size: 12px;
+      h1 { font-size: 16px; }
+      h2 { font-size: 15px; }
+      h3 { font-size: 14px; }
+      h4 { font-size: 13px; }
+      h5 { font-size: 12px; }
+      h6 { font-size: 12px; }
+    }
+  }
+}
+
+// 报告详细视图样式
+.report-detail-view {
+  .report-summary-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-top: 3px solid #2d3748;
+    box-shadow: 0 2px 4px rgba(45, 55, 72, 0.1);
+    
+    .quote-icon {
+      margin-right: 8px;
+      color: #6c757d;
+    }
+    
+    .report-summary {
+      color: #495057;
+      font-style: normal;
+      line-height: 1.6;
+      margin: 0;
+      font-size: 20px;
+      font-weight: 400;
+    }
+  }
+}
+
+// 网络搜索详细视图样式（与 CardNode 对齐）
+.web-search-detail-view {
+  font-size: 18px;
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    
+    .search-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+    
+    .search-query {
+      flex: 1;
+      font-size: 15px;
+      color: #374151;
+      line-height: 1.5;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      padding: 10px 12px;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+  }
+ 
+  .search-results {
+    .search-result-item {
+      margin-bottom: 16px;
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-color: #d1d5db;
+      }
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      .result-number {
+        color: #ffffff;
+        background: #9ca3af;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 5px;
+        margin-bottom: 8px;
+      }
+      
+      .result-title {
+        color: #1a73e8;
+        font-weight: 600;
+        font-size: 18px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+        cursor: default;
+
+        // 重置 Markdown 标题的默认间距，避免与序号垂直错位
+        h1, h2, h3, h4, h5, h6 {
+          margin: 0;
+          padding: 0;
+          font-size: inherit;
+          line-height: inherit;
+          font-weight: inherit;
+          display: inline;
+        }
+
+        p {
+          margin: 0;
+          padding: 0;
+          display: inline;
+        }
+      }
+      
+      .result-url {
+        color: #059669;
+        font-size: 14px;
+        margin-bottom: 12px;
+        word-break: break-all;
+        line-height: 1.6;
+
+        &:hover {
+          color: #047857;
+          text-decoration: underline;
+        }
+      }
+      
+      .result-snippet {
+        color: #495057;
+        font-size: 15px;
+        line-height: 1.75;
+        margin: 0;
+      }
+    }
+  }
+}
+
+// DetailView 内联使用的 web_search 内容展示（CardNode 对齐的搜索框样式）
+.detail-content {
+  .web-search-content {
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .search-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+
+      .search-query {
+        flex: 1;
+        font-size: 15px;
+        color: #374151;
+        line-height: 1.5;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding: 10px 12px;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+      }
+    }
+
+    .search-results {
+      .search-result-item {
+        .result-number {
+            color: #ffffff;
+            background: #9ca3af;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 5px;
+            margin-bottom: 8px;
+        }
+
+        .result-content {
+          .result-title {
+            font-size: 18px;
+
+            h1, h2, h3, h4, h5, h6 {
+              margin: 0;
+              padding: 0;
+              font-size: inherit;
+              line-height: inherit;
+              font-weight: inherit;
+              display: inline;
+            }
+
+            p {
+              margin: 0;
+              padding: 0;
+              display: inline;
+            }
+          }
+
+          .result-url {
+            font-size: 14px;
+          }
+
+          .result-snippet {
+            font-size: 15px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 用户需求详细视图样式
+// 注意：DetailView 中直接渲染的是 .detail-content > .user-requirement-content
+// 这里同时兼容 .user-requirement-detail-view 和直接在 detail-content 中使用的情况
+.user-requirement-detail-view,
+.detail-content {
+  .user-requirement-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 4px 6px 4px 2px;
+    
+    .user-requirement-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      
+      .user-requirement-icon {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: -6px;
+        
+        .content-icon {
+          width: 28px;
+          height: 28px;
+          object-fit: contain;
+          filter: none;
+        }
+      }
+      
+      .user-requirement-text {
+        flex: 1;
+        color: #495057;
+        font-size: 18px;
+        line-height: 1.5;
+        margin: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+      }
+    }
+    
+    // 在 user_requirement 卡片中的迷你卡片样式（更大版本）
+    .user-requirement-references {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+      
+      .card-ref-collapsed {
+        width: 120px; // 从100px增大到120px
+        height: 26px; // 从22px增大到26px
+        margin: 2px 3px; // 稍微增加间距
+        
+        .card-ref-collapsed-icon {
+          width: 26px; // 从22px增大到26px
+          height: 26px; // 从22px增大到26px
+          
+          img {
+            width: 14px; // 从12px增大到14px
+            height: 14px; // 从12px增大到14px
+          }
+        }
+        
+        .card-ref-collapsed-title {
+          width: 100px; // 从80px增大到100px
+          height: 20px; // 从18px增大到20px
+          border-radius: 10px; // 相应调整圆角
+          padding: 0 8px 0 12px; // 相应增加padding
+          margin-left: -8px; // 调整重叠距离
+          font-size: 10px; // 从8px增大到10px
+        }
+        
+        .card-ref-delete-btn {
+          width: 16px; // 从14px增大到16px
+          height: 16px; // 从14px增大到16px
+          font-size: 11px; // 从12px调整为11px以保持一致性
+        }
+      }
+    }
+  }
+}
+
+// 目标任务详细视图样式
+.target-task-detail-view {
+  .target-task-content {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    
+    .todo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      
+      .todo-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 0;
+        
+        .todo-icon {
+          width: 24px;
+          height: 24px;
+          flex-shrink: 0;
+          
+          &.in_progress {
+            color: #007bff;
+            margin-left: -2px;
+          }
+          
+          &.todo-interrupted {
+            color: #dc3545;
+          }
+          
+          &.todo-pending {
+            color: #6c757d;
+          }
+          
+          &.todo-completed {
+            color: #28a745;
+          }
+        }
+        
+        .todo-text {
+          color: #495057;
+          font-size: 14px;
+          line-height: 1.5;
+          flex: 1;
+          
+          &.in_progress {
+            font-weight: 600;
+          }
+          
+          &.todo-interrupted {
+            text-decoration: line-through;
+            color: #6c757d;
+          }
+          
+          &.todo-pending {
+            color: #6c757d;
+          }
+          
+          &.todo-completed {
+            text-decoration: line-through;
+            color: #6c757d;
+          }
+        }
+      }
+    }
+  }
+}

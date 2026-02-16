@@ -1,0 +1,248 @@
+.welcome-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.welcome-content {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transform: translateY(-60px);
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+.welcome-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700 !important;
+  font-style: normal;
+  font-size: 64px !important;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000000;
+  margin-bottom: 0px;
+  background: #000000;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcome-input-container {
+  width: 100%;
+  max-width: 657px;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+  border: 2px solid #000000;
+  border-radius: 16px !important;
+  padding-left: 10px;
+  padding-right: 0px;
+  
+  transition: all 0.3s ease;
+  height: auto;
+  max-height: 400px;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+}
+
+
+.welcome-input {
+  flex: 1;
+  
+  .MuiOutlinedInput-root {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding-right: 0px !important; // 给按钮留出空间
+    
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border: none !important;
+    }
+    
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border: none !important;
+    }
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+  }
+
+  .MuiInputBase-root {
+    border-radius: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: flex-end !important;
+  }
+
+  .MuiInputBase-input {
+    font-family: 'Itim', cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #999;
+    opacity: 1;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+    transform: translateY(-2px);
+
+  }
+
+  // 单行输入框特定样式
+  .MuiInputBase-input:not(.MuiInputBase-inputMultiline) {
+    height: auto !important;
+    overflow: hidden !important;
+    margin-bottom: auto !important;
+    margin-top: 0 !important;
+  }
+
+  .MuiInputAdornment-root {
+    align-self: flex-end !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  // 确保多行输入也保持圆形
+  .MuiInputBase-inputMultiline {
+    border-radius: 0 !important;
+    padding: 0 !important;
+    padding-top: 8px !important;
+    padding-bottom: 0px !important;
+    box-sizing: border-box !important;
+    line-height: 120% !important;
+    margin-bottom: auto !important;
+    overflow: auto !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .MuiInputBase-inputMultiline::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  .MuiInputBase-inputMultiline::placeholder {
+    transform: translateY(2px);
+  }
+}
+
+.welcome-send-button {
+  background-color: transparent !important;
+  color: white !important;
+  transition: all 0.2s ease;
+  margin-left: 8px !important;
+  margin-bottom: 1px !important;
+  // padding: 10px;
+  border-radius: 50%;
+  min-width: 48px;
+  height: 48px;
+  font-size: 20px;
+
+  &:hover:not(:disabled) {
+    background-color: transparent !important;
+    color: white !important;
+    transform: scale(1.05);
+    
+  }
+
+  &:disabled {
+    background-color: transparent !important;
+    color: #9e9e9e !important;
+    
+    img {
+      opacity: 0.3;
+      filter: grayscale(100%);
+    }
+  }
+}
+
+.welcome-stop-button {
+  background-color: #f44336 !important;
+  color: white !important;
+  transition: all 0.2s ease;
+  margin-left: 8px !important;
+  padding: 10px;
+  border-radius: 50%;
+  min-width: 48px;
+  height: 48px;
+  font-size: 20px;
+
+  // 确保图标颜色正确
+  .MuiSvgIcon-root {
+    color: white !important;
+  }
+
+  &:hover {
+    background-color: #d32f2f !important;
+    color: white !important;
+    transform: scale(1.05);
+    
+    .MuiSvgIcon-root {
+      color: white !important;
+    }
+  }
+}
+
+.welcome-footer {
+  text-align: center;
+  max-width: 500px;
+}
+
+.footer-text {
+  color: #95a5a6;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .welcome-view {
+    padding: 16px;
+  }
+
+  .welcome-content {
+    gap: 30px;
+    transform: translateY(-30px);
+  }
+
+  .welcome-title {
+    font-size: 2rem;
+  }
+
+  .welcome-input-container {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-content {
+    transform: translateY(-20px);
+  }
+
+  .welcome-title {
+    font-size: 1.8rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1rem;
+  }
+
+}

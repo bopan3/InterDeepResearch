@@ -1,0 +1,81 @@
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.tooltip-content {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px; /* Match card width */
+  z-index: 9999;
+  pointer-events: none;
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+.tooltip-top {
+  bottom: 100%;
+  margin-bottom: 8px;
+}
+
+.tooltip-bottom {
+  top: 100%;
+  margin-top: 8px;
+}
+
+.tooltip-text {
+  background: rgba(30, 41, 59, 0.95);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tooltip-arrow {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+
+.tooltip-top .tooltip-arrow {
+  top: 100%;
+  border-top: 6px solid rgba(30, 41, 59, 0.95);
+}
+
+.tooltip-bottom .tooltip-arrow {
+  bottom: 100%;
+  border-bottom: 6px solid rgba(30, 41, 59, 0.95);
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .tooltip-text {
+    max-width: 200px;
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
