@@ -1,0 +1,31 @@
+# Interactive Deep Research (IDR) Default Configuration
+
+# Serper API Key Pool (for web search), you can obtain free key from https://serper.dev/.
+SERPER_API_KEY_POOL:
+- "enter your Serper API key at here"
+
+# LLM Configuration. You should use the model name standard vy liteLLM (https://www.litellm.ai/) to specify the model (recommand to use claude-sonnet-4.5 by defualt). 
+llm_config:
+  agent_config:
+    root_agent_config:
+      agent_type: "ResearchAgent"
+      model: "openrouter/anthropic/claude-sonnet-4.5"
+      temperature: 0.2
+      top_p: 0.1
+
+  specialized_llm_invocation_config:
+    summary:
+      model: "openrouter/anthropic/claude-sonnet-4.5"
+      temperature: 0.2
+      top_p: 0.1
+
+# Custom API configuration. You should set up the base_url and api_key from your api platform (recommand to use openrouter for flexibility and stability). 
+customized_base_url: "your_api_base_url"
+customized_api_key: "your_api_key"
+
+# System language: "English" (fixed to English)
+system_language: "English"
+
+# Server mode: "normal" (fixed to normal)
+server_mode: "normal"
+
