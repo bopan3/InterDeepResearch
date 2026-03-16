@@ -12,7 +12,7 @@
 
 A prototype interacive research system that enables human-agent collaborative information seeking. Observe, steer, and navigate the research process in real-time with visual sensemaking and evidence tracing.
 
-📄 **Paper**: [InterDeepResearch: Enabling Human-Agent Collaborative Information Seeking through Interactive Deep Research](https://arxiv.org/abs/2603.12608)
+🔥 **Paper**: [InterDeepResearch: Enabling Human-Agent Collaborative Information Seeking through Interactive Deep Research](https://arxiv.org/abs/2603.12608)
 
 ## System Interface \& Demo
 
