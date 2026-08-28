@@ -48,7 +48,7 @@ To validate the basic information-seeking capabilities of InterDeepResearch, we 
 1. Clone the repository and navigate to the project root:
 
 ```bash
-git clone https://github.com/anonymous-review/InterDeepResearch.git
+git clone https://github.com/bopan3/Interdisciplinary-Research.git
 cd InterDeepResearch
 ```
 
