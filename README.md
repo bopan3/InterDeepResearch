@@ -1,4 +1,4 @@
-# InterDeepResearch: Enabling Human-Agent Collaborative Information Seeking through Interactive Deep Research
+# InterDeepResearch: Enabling Human-Agent Collaborative Information Seeking with Interactive Visualization of Agentic Search Processes
 
 <div align="center">
 
@@ -6,13 +6,12 @@
 [![React](https://img.shields.io/badge/React-18.2+-61DAFB.svg)](https://reactjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
 [![SocketIO](https://img.shields.io/badge/SocketIO-4.7+-010101.svg)](https://socket.io/)
-[![arXiv](https://img.shields.io/badge/arXiv-2603.12608-b31b1b.svg)](https://arxiv.org/abs/2603.12608)
 
 </div>
 
-A prototype interacive research system that enables human-agent collaborative information seeking. Observe, steer, and navigate the research process in real-time with visual sensemaking and evidence tracing.
+A prototype interactive visualization system that enables human-agent collaborative information seeking. Observe, steer, and navigate agentic research processes in real time with visual sensemaking and evidence tracing.
 
-🔥 **Paper**: [InterDeepResearch: Enabling Human-Agent Collaborative Information Seeking through Interactive Deep Research](https://arxiv.org/abs/2603.12608)
+🔥 **Paper**: *InterDeepResearch: Enabling Human-Agent Collaborative Information Seeking with Interactive Visualization of Agentic Search Processes*
 
 ## System Interface \& Demo
 
@@ -49,7 +48,7 @@ To validate the basic information-seeking capabilities of InterDeepResearch, we 
 1. Clone the repository and navigate to the project root:
 
 ```bash
-git clone https://github.com/bopan3/InterDeepResearch.git
+git clone https://github.com/anonymous-review/InterDeepResearch.git
 cd InterDeepResearch
 ```
 
@@ -155,5 +154,3 @@ The frontend will open automatically at `http://localhost:3000`
 2. Start the frontend development server (see Frontend Setup step 4)
 3. Open your browser and navigate to `http://localhost:3000`
 4. Enter your research goal in the input box and start exploring!
-
-
